@@ -1,7 +1,8 @@
 <?php
 
+// config.php contains the variables required to connect to the database:
+// $host, $database, $user, $pass
 require_once('include/config.php');
-//select t1.*, t2.feed, t2.options from wp_lifestream_event as t1 inner join wp_lifestream_feeds as t2 on t1.feed_id = t2.id order by t1.timestamp desc limit 5
 
 $blog_feed = 19;
 $flickr_feed = 12;
@@ -13,12 +14,15 @@ $goodreads_feed = 13;
 
 $db;
 $base_sql = "select t1.*, t2.feed, t2.options from wp_lifestream_event as t1 inner join wp_lifestream_feeds as t2 on t1.feed_id = t2.id where t2.id = :feed order by t1.timestamp desc limit :limit";
+$base_sql_combine = "select t1.*, t2.feed, t2.options from wp_lifestream_event as t1 inner join wp_lifestream_feeds as t2 on t1.feed_id = t2.id where t2.id = :feed1 or t2.id = :feed2 order by t1.timestamp desc limit :limit";
 $statement;
+$statment_combine;
 
 try
 {
    $db = new PDO("mysql:host=$host;dbname=$database", $user, $pass);
    $statement = $db->prepare($base_sql);
+   $statement_combine = $db->prepare($base_sql_combine);
 }
 catch(PDOException $e)
 {
@@ -85,6 +89,82 @@ catch(PDOException $e)
 	 </div>
       </div> <!-- end blog -->
 
+      <div id="facebook">
+	 <div class="description">
+	    <h4>Facebook</h4>
+	    <p>Share & Share Alike</p>
+	 </div>
+	 <div class="content">
+	 <?php
+	 try
+	 {
+	    $limit = 5;
+	    $statement_combine->bindParam(':feed1', $facebook_share_feed, PDO::PARAM_INT);
+	    $statement_combine->bindParam(':feed2', $facebook_status_feed, PDO::PARAM_INT);
+	    $statement_combine->bindParam(':limit', $limit, PDO::PARAM_INT);
+
+	    $statement_combine->execute();
+	    $result = $statement_combine->fetchAll();
+
+	    print "<ul>";
+	    foreach($result as $row)
+	    {
+	       // Add style between share entry and status entry
+	       print "<li>";
+	       $data = unserialize($row['data']);
+	       $link = $data['link'];
+	       $title = $data['title'];
+	       $desc = $data['description'];
+	       print "<p><a href='$link'>$title</a></p>";
+	       print "</li>";
+	    }
+	    print "</ul>";
+	 }
+	 catch(PDOException $e)
+	 {
+	    print "<h2>DB Error</h2>";
+	 }
+	 ?>
+	 </div>
+      </div> <!-- end facebook -->
+
+      <div id="twitter">
+	 <div class="description">
+	    <h4>Twitter</h4>
+	    <p>One hundred forty character thoughts...</p>
+	 </div>
+	 <div class="content">
+	 <?php
+	 try
+	 {
+	    $limit = 5;
+	    $statement->bindParam(':feed', $twitter_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+
+	    print "<ul>";
+	    foreach($result as $row)
+	    {
+	       print "<li>";
+	       $data = unserialize($row['data']);
+	       $link = $data['link'];
+	       $title = $data['title'];
+	       $desc = $data['description'];
+	       print "<p>$title</p>";
+	       print "</li>";
+	    }
+	    print "</ul>";
+	 }
+	 catch(PDOException $e)
+	 {
+	    print "<h2>DB Error</h2>";
+	 }
+	 ?>
+	 </div>
+      </div> <!-- end twitter -->
+
       <div id="flickr">
 	 <div class="description">
 	    <h4>Photography</h4>
@@ -119,6 +199,79 @@ catch(PDOException $e)
 	 ?>
 	 </div>
       </div> <!-- end flickr -->
+
+      <div id="delicous">
+	 <div class="description">
+	    <h4>Delicious</h4>
+	    <p>My link collection...</p>
+	 </div>
+	 <div class="content">
+	 <?php
+	 try
+	 {
+	    $limit = 5;
+	    $statement->bindParam(':feed', $delicious_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+
+	    print "<ul>";
+	    foreach($result as $row)
+	    {
+	       print "<li>";
+	       $data = unserialize($row['data']);
+	       $link = $data['link'];
+	       $title = $data['title'];
+	       $desc = $data['description'];
+	       print "<p><a href='$link'>$title</a> $desc</p>";
+	       print "</li>";
+	    }
+	    print "</ul>";
+	 }
+	 catch(PDOException $e)
+	 {
+	    print "<h2>DB Error</h2>";
+	 }
+	 ?>
+	 </div>
+      </div> <!-- end delicious -->
+
+      <div id="goodreads">
+	 <div class="description">
+	    <h4>Goodreads</h4>
+	    <p>What I'm reading</p>
+	 </div>
+	 <div class="content">
+	 <?php
+	 try
+	 {
+	    $limit = 10;
+	    $statement->bindParam(':feed', $goodreads_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+
+	    foreach($result as $row)
+	    {
+	       $data = unserialize($row['data']);
+	       $link = $data['link'];
+	       $thumb = $data['thumbnail'];
+	       $title = $data['title'];
+	       $desc = $data['description'];
+	       print "<a href='$link' title='$title'>\n";
+	       print "<img src='$thumb' alt='$title' />\n";
+	       print "</a>";
+	    }
+	 }
+	 catch(PDOException $e)
+	 {
+	    print "<h2>DB Error</h2>";
+	 }
+	 ?>
+	 </div>
+      </div> <!-- end goodreads -->
 
    </div> <!-- end content -->
 </body>

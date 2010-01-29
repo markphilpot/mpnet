@@ -20,7 +20,7 @@ $statment_combine;
 
 try
 {
-   $db = new PDO("mysql:host=$host;dbname=$database", $user, $pass);
+   $db = new PDO("mysql:host=$host;dbname=$database", $user);
    $statement = $db->prepare($base_sql);
    $statement_combine = $db->prepare($base_sql_combine);
 }
@@ -41,9 +41,6 @@ catch(PDOException $e)
 
 <body>
 
-   <div id="menu">
-   </div> <!-- end menu -->
-
    <div id="content">
       <div id="header">
 	 <div id="logo" class="description">
@@ -51,6 +48,7 @@ catch(PDOException $e)
 	 </div> <!-- end logo -->
 	 <div id="bio" class="content">
 	    <p>My name is Mark Philpot and I'm a software engineer in the San Francisco, Bay Area.</p>
+	    <p>Fill empty space</p>
 	 </div> <!-- end bio -->
       </div> <!-- end header -->
 
@@ -106,7 +104,7 @@ catch(PDOException $e)
 	    $statement_combine->execute();
 	    $result = $statement_combine->fetchAll();
 
-	    print "<ul>";
+	    print "<ul>\n";
 	    foreach($result as $row)
 	    {
 	       // Add style between share entry and status entry
@@ -116,7 +114,7 @@ catch(PDOException $e)
 	       $title = $data['title'];
 	       $desc = $data['description'];
 	       print "<p><a href='$link'>$title</a></p>";
-	       print "</li>";
+	       print "</li>\n";
 	    }
 	    print "</ul>";
 	 }
@@ -144,7 +142,7 @@ catch(PDOException $e)
 	    $statement->execute();
 	    $result = $statement->fetchAll();
 
-	    print "<ul>";
+	    print "<ul>\n";
 	    foreach($result as $row)
 	    {
 	       print "<li>";
@@ -153,7 +151,7 @@ catch(PDOException $e)
 	       $title = $data['title'];
 	       $desc = $data['description'];
 	       print "<p>$title</p>";
-	       print "</li>";
+	       print "</li>\n";
 	    }
 	    print "</ul>";
 	 }
@@ -174,7 +172,7 @@ catch(PDOException $e)
 	 <?php
 	 try
 	 {
-	    $limit = 10;
+	    $limit = 21;
 	    $statement->bindParam(':feed', $flickr_feed, PDO::PARAM_INT);
 	    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
 
@@ -246,7 +244,7 @@ catch(PDOException $e)
 	 <?php
 	 try
 	 {
-	    $limit = 10;
+	    $limit = 22;
 	    $statement->bindParam(':feed', $goodreads_feed, PDO::PARAM_INT);
 	    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
 

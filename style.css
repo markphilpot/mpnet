@@ -36,11 +36,12 @@ padding: 0;
 /* Main */
 body {
 font-family: 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+font-size: 0.8em;
 }
 
 #content {
 margin: 1em auto 3em;
-width: 60em;
+width: 70em;
 }
 
 .description {
@@ -50,7 +51,7 @@ float: left;
 
 .description h4 {
 margin: 36px 0 0 20px;
-font-size: 1.25em;
+font-size: 1.5em;
 }
 
 .description h1 {
@@ -64,7 +65,7 @@ margin: 2px 50px 0 20px;
 
 .content {
 float: left;
-width: 38em;
+width: 45em;
 padding: 30px 0 0 1px;
 }
 

@@ -11,6 +11,8 @@ $facebook_status_feed = 18;
 $delicious_feed = 7;
 $twitter_feed = 11;
 $goodreads_feed = 13;
+$github_feed = 16;
+$googlereader_feed = 5;
 
 $db;
 $base_sql = "select t1.*, t2.feed, t2.options from wp_lifestream_event as t1 inner join wp_lifestream_feeds as t2 on t1.feed_id = t2.id where t2.id = :feed order by t1.timestamp desc limit :limit";
@@ -37,9 +39,21 @@ catch(PDOException $e)
    <meta charset="utf-8">
    <link rel="stylesheet" href="style.css" type="text/css"/>
    <title>Mark Philpot</title>
+   <script type="text/javascript" src="lib/jquery-1.4.1.min.js"></script>
+   <script type="text/javascript" src="lib/jquery-lightbox-0.5/js/jquery.lightbox-0.5.js"></script>
+   <link rel="stylesheet" type="text/css" href="lib/jquery-lightbox-0.5/css/jquery.lightbox-0.5.css" media="screen" />
 </head>
 
 <body>
+
+<script type="text/javascript">
+$(function() {
+	$('#flickr a').lightBox({
+			imageLoading: 'lib/jquery-lightbox-0.5/images/lightbox-ico-loading.gif',
+			imageBtnClose: 'lib/jquery-lightbox-0.5/images/lightbox-btn-close.gif'
+	}); // Select all links in object with gallery ID
+});
+</script>
 
    <div id="content">
       <div id="header">
@@ -185,7 +199,10 @@ catch(PDOException $e)
 	       $link = $data['link'];
 	       $thumb = $data['thumbnail'];
 	       $title = $data['title'];
-	       print "<a href='$link' title='$title'>\n";
+	       $img = $data['image'];
+	       $img = preg_replace("/_s/","",$thumb);
+	       //print_r($data);
+	       print "<a href='$img' title='$title'>\n";
 	       print "<img src='$thumb' alt='$title' />\n";
 	       print "</a>";
 	    }
@@ -270,6 +287,46 @@ catch(PDOException $e)
 	 ?>
 	 </div>
       </div> <!-- end goodreads -->
+      
+      <div id="github">
+	 <div class="description">
+	    <h4>Development</h4>
+	    <p>Personal development streams from github</p>
+	 </div>
+	 <div class="content">
+	 <?php
+	 try
+	 {
+	    $limit = 5;
+	    $statement->bindParam(':feed', $github_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+
+	    print "<ul>\n";
+	    foreach($result as $row)
+	    {
+	       print "<li>";
+	       $data = unserialize($row['data']);
+	       $link = $data['link'];
+	       $title = $data['title'];
+	       $desc = $data['description'];
+	       $rep_bak;
+	       preg_match("%github\.com/(.*)/commits.*%",$link,$rep_back);
+	       $rep = isset($data['repository']) ? $data['repository'] : $rep_back[1];
+	       print "<p>Commited <a href='$link'>$title</a> to <a href='http://github.com/$rep'>$rep</a></p>";
+	       print "</li>\n";
+	    }
+	    print "</ul>";
+	 }
+	 catch(PDOException $e)
+	 {
+	    print "<h2>DB Error</h2>";
+	 }
+	 ?>
+	 </div>
+      </div> <!-- end github -->
 
    </div> <!-- end content -->
 </body>

@@ -12,7 +12,7 @@ $delicious_feed = 7;
 $twitter_feed = 11;
 $goodreads_feed = 13;
 $github_feed = 16;
-$googlereader_feed = 5;
+$greader_feed = 5;
 
 $db;
 $base_sql = "select t1.*, t2.feed, t2.options from wp_lifestream_event as t1 inner join wp_lifestream_feeds as t2 on t1.feed_id = t2.id where t2.id = :feed order by t1.timestamp desc limit :limit";
@@ -41,6 +41,7 @@ catch(PDOException $e)
    <title>Mark Philpot</title>
    <script type="text/javascript" src="lib/jquery-1.4.1.min.js"></script>
    <script type="text/javascript" src="lib/jquery-lightbox-0.5/js/jquery.lightbox-0.5.js"></script>
+   <script type="text/javascript" src="lib/jquery.preview.js"></script>
    <link rel="stylesheet" type="text/css" href="lib/jquery-lightbox-0.5/css/jquery.lightbox-0.5.css" media="screen" />
 </head>
 
@@ -62,7 +63,7 @@ $(function() {
 	 </div> <!-- end logo -->
 	 <div id="bio" class="content">
 	    <p>My name is Mark Philpot and I'm a software engineer in the San Francisco, Bay Area.</p>
-	    <p>Fill empty space</p>
+	    <p>This space is my social networking footprint (lifestream).</p>
 	 </div> <!-- end bio -->
       </div> <!-- end header -->
 
@@ -70,6 +71,7 @@ $(function() {
 	 <div class="description">
 	    <h4>Blog Posts</h4>
 	    <p>Occasionally I need to write something longer than 140 characters, post a picture or comment on a video.</p>
+	    <p><a href="http://blog.mcstudios.net">turn on | tune in | strung out</a></p>
 	 </div>
 	 <div class="content">
 	 <?php
@@ -82,16 +84,24 @@ $(function() {
 	    $statement->execute();
 	    $result = $statement->fetchAll();
 
+	    print "<ul>\n";
 	    foreach($result as $row)
 	    {
+	    	print "<li>";
 	       $data = unserialize($row['data']);
 	       $title = $data['title'];
 	       $desc = $data['description'];
 	       $link = $data['link'];
 	       $thumb = $data['thumbnail'];
-	       print "<h2><a href='$link' title='$title'>$title</a></h2>\n";
-	       print "<p>$desc</p>\n";
+	       	if(preg_match('/add-to-any/', $thumb))
+	       		print "<h2><a href='$link' title='$title'>$title</a></h2>\n";
+	       	else
+	       		print "<h2><a href='$link' rel='$thumb' class='preview' title='$title'>$title</a></h2>\n";
+	       
+	       	print "<p>$desc</p>";
+	       	print "</li>\n";
 	    }
+	    print "<ul/>";
 	 }
 	 catch(PDOException $e)
 	 {
@@ -100,6 +110,43 @@ $(function() {
 	 ?>
 	 </div>
       </div> <!-- end blog -->
+      
+      <div id="greader">
+	 <div class="description">
+	    <h4>Feed Reader</h4>
+	    <p>Things I find interesting in my daily feeds</p>
+	 </div>
+	 <div class="content">
+	 <?php
+	 try
+	 {
+	    $limit = 5;
+	    $statement->bindParam(':feed', $greader_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+
+	    print "<ul>\n";
+	    foreach($result as $row)
+	    {
+	       print "<li>";
+	       $data = unserialize($row['data']);
+	       $link = $data['link'];
+	       $title = $data['title'];
+	       $desc = $data['description'];
+	       print "<p><a href='$link'>$title</a></p>";
+	       print "</li>\n";
+	    }
+	    print "</ul>";
+	 }
+	 catch(PDOException $e)
+	 {
+	    print "<h2>DB Error</h2>";
+	 }
+	 ?>
+	 </div>
+      </div> <!-- end twitter -->
 
       <div id="facebook">
 	 <div class="description">
@@ -127,6 +174,7 @@ $(function() {
 	       $link = $data['link'];
 	       $title = $data['title'];
 	       $desc = $data['description'];
+	       $title = preg_replace("/^Mark /","",$title);
 	       print "<p><a href='$link'>$title</a></p>";
 	       print "</li>\n";
 	    }
@@ -164,7 +212,9 @@ $(function() {
 	       $link = $data['link'];
 	       $title = $data['title'];
 	       $desc = $data['description'];
-	       print "<p>$title</p>";
+	       $title = preg_replace("/griphiam:/","", $title);
+	       $title = preg_replace("/@([\w]*)/", "<a href='http://twitter.com/$1'>@$1</a>", $title);
+	       print "<p><a href='$link'><img src='images/twitter_mini_profile.jpg'/></a> $title</p>";
 	       print "</li>\n";
 	    }
 	    print "</ul>";
@@ -215,7 +265,7 @@ $(function() {
 	 </div>
       </div> <!-- end flickr -->
 
-      <div id="delicous">
+      <div id="delicious">
 	 <div class="description">
 	    <h4>Delicious</h4>
 	    <p>My link collection...</p>
@@ -261,7 +311,7 @@ $(function() {
 	 <?php
 	 try
 	 {
-	    $limit = 22;
+	    $limit = 20;
 	    $statement->bindParam(':feed', $goodreads_feed, PDO::PARAM_INT);
 	    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
 
@@ -327,10 +377,47 @@ $(function() {
 	 ?>
 	 </div>
       </div> <!-- end github -->
+      
+      <div id="copyright">
+      	<p>Copyright 1998-2010 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0; vertical-align: bottom;" src="http://i.creativecommons.org/l/by-sa/3.0/us/80x15.png" /></a>
+      	 <a href="http://github.com/griphiam/mpnet">src</a></p>
+      </div>
+      
+<script type="text/javascript">
 
-   </div> <!-- end content -->
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-9149255-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+  })();
+
+</script>
+<script type="text/javascript"> 
+	jQuery.noConflict();
+	(function($){  
+	    
+	$('a.preview').imgPreview({
+	    containerID: 'img-preview',
+	    srcAttr: 'rel',
+	    // When container is shown:
+	    onShow: function(link){
+	        $('<span>' + link.href + '</span>').appendTo(this);
+	    },
+	    // When container hides: 
+	    onHide: function(link){
+	        $('span', this).remove();
+	    }
+	});
+	
+	
+	})(jQuery);
+</script> 
+
 </body>
-
 </html>
 
 <?php

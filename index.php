@@ -47,15 +47,6 @@ catch(PDOException $e)
 
 <body>
 
-<script type="text/javascript">
-$(function() {
-	$('#flickr a').lightBox({
-			imageLoading: 'lib/jquery-lightbox-0.5/images/lightbox-ico-loading.gif',
-			imageBtnClose: 'lib/jquery-lightbox-0.5/images/lightbox-btn-close.gif'
-	}); // Select all links in object with gallery ID
-});
-</script>
-
    <div id="content">
       <div id="header">
 	 <div id="logo" class="description">
@@ -396,11 +387,19 @@ $(function() {
   })();
 
 </script>
+
+<script type="text/javascript">
+$(function() {
+	$('#flickr a').lightBox({
+			imageLoading: 'lib/jquery-lightbox-0.5/images/lightbox-ico-loading.gif',
+			imageBtnClose: 'lib/jquery-lightbox-0.5/images/lightbox-btn-close.gif'
+	}); // Select all links in object with gallery ID
+});
+</script>
+
 <script type="text/javascript"> 
-	jQuery.noConflict();
-	(function($){  
-	    
-	$('a.preview').imgPreview({
+(function($){  	    
+	$('#blog a.preview').imgPreview({
 	    containerID: 'img-preview',
 	    srcAttr: 'rel',
 	    // When container is shown:
@@ -412,10 +411,8 @@ $(function() {
 	        $('span', this).remove();
 	    }
 	});
-	
-	
-	})(jQuery);
-</script> 
+})(jQuery);
+</script>
 
 </body>
 </html>

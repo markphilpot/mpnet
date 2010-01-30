@@ -36,13 +36,13 @@ p {
 /* Fonts */
 @font-face {
     font-family: GraublauWeb;
-    src: url(fonts/GraublauWeb.otf) format(truetype);
+    src: url(fonts/GraublauWeb.otf) format("opentype");
 }
 
 @font-face {
     font-family: GraublauWeb;
     font-weight: bold;
-    src: url(fonts/GraublauWebBold.otf) format(truetype);
+    src: url(fonts/GraublauWebBold.otf) format("opentype");
 }
 
 /* Links */

@@ -68,7 +68,7 @@ catch(PDOException $e)
 	 <?php
 	 try
 	 {
-	    $limit = 5;
+	    $limit = 7;
 	    $statement->bindParam(':feed', $blog_feed, PDO::PARAM_INT);
 	    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
 
@@ -76,11 +76,16 @@ catch(PDOException $e)
 	    $result = $statement->fetchAll();
 
 	    print "<ul>\n";
+	    $last_title = "";
 	    foreach($result as $row)
 	    {
 	    	print "<li>";
 	       $data = unserialize($row['data']);
 	       $title = $data['title'];
+	       if($title == $last_title)
+			continue;
+	       else
+			$last_title = $title;
 	       $desc = $data['description'];
 	       $link = $data['link'];
 	       $thumb = $data['thumbnail'];

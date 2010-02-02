@@ -323,7 +323,8 @@ catch(PDOException $e)
 	       $thumb = trim($data['thumbnail']);
 	       $title = trim($data['title']);
 	       $desc = trim($data['description']);
-	       print "<a href='$link' title='$title'>\n";
+	       $image = trim($data['image']);
+	       print "<a href='$link' rel='$image' class='preview' title='$title'>\n";
 	       print "<img src='$thumb' alt='$title' />\n";
 	       print "</a>";
 	    }
@@ -406,17 +407,27 @@ $(function() {
 
 <script type="text/javascript"> 
 (function($){  	    
-	$('#blog a.preview').imgPreview({
+	$('a.preview').imgPreview({
 	    containerID: 'img-preview',
+	    distanceFromCursor: {top:-200, left:10},
 	    srcAttr: 'rel',
 	    // When container is shown:
 	    onShow: function(link){
-	        $('<span>' + link.href + '</span>').appendTo(this);
-	    },
-	    // When container hides: 
-	    onHide: function(link){
-	        $('span', this).remove();
-	    }
+        	// Animate link:
+        	$(link).stop().animate({opacity:0.4});
+        	// Reset image:
+        	$('img', this).stop().css({opacity:0});
+    	},
+    	// When image has loaded:
+    	onLoad: function(){
+        	// Animate image
+        	$(this).animate({opacity:1}, 400);
+    	},
+    	// When container hides: 
+    	onHide: function(link){
+        	// Animate link:
+        	$(link).stop().animate({opacity:1});
+    	}
 	});
 })(jQuery);
 </script>

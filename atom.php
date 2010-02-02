@@ -44,6 +44,8 @@ try
 		
 		$Feed->addItem($item);
 	}
+	
+	$db = null;
 }
 catch(PDOException $e)
 {

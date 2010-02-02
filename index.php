@@ -143,7 +143,7 @@ catch(PDOException $e)
 	 }
 	 ?>
 	 </div>
-      </div> <!-- end twitter -->
+      </div> <!-- end greader -->
 
       <div id="facebook">
 	 <div class="description">
@@ -210,8 +210,8 @@ catch(PDOException $e)
 	       $title = $data['title'];
 	       $desc = $data['description'];
 	       $title = preg_replace("/griphiam:/","", $title);
-	       $title = preg_replace("/@([\w]*)/", "<a href='http://twitter.com/$1'>@$1</a>", $title); // add links to twitter users
 	       $title = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1">$1</a>', $title); // add links to links
+	       $title = preg_replace("/@([\w]*)/", "<a href='http://twitter.com/$1'>@$1</a>", $title); // add links to twitter users
 	       print "<p><a href='$link'><img src='images/twitter_mini_profile.jpg'/></a> $title</p>";
 	       print "</li>\n";
 	    }
@@ -324,8 +324,8 @@ catch(PDOException $e)
 	       $title = trim($data['title']);
 	       $desc = trim($data['description']);
 	       $image = trim($data['image']);
-	       print "<a href='$link' rel='$image' class='preview' title='$title'>\n";
-	       print "<img src='$thumb' alt='$title' />\n";
+	       print "<a href='$link' rel='$image' class='preview' title=\"$title\">\n";
+	       print "<img src='$thumb' alt=\"$title\" />\n";
 	       print "</a>";
 	    }
 	 }

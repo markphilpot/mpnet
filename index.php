@@ -210,7 +210,7 @@ catch(PDOException $e)
 	       $title = $data['title'];
 	       $desc = $data['description'];
 	       $title = preg_replace("/griphiam:/","", $title);
-	       $title = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1">$1</a>', $title); // add links to links
+	       $title = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1">$1</a>', $title); // add links to links
 	       $title = preg_replace("/@([\w]*)/", "<a href='http://twitter.com/$1'>@$1</a>", $title); // add links to twitter users
 	       print "<p><a href='$link'><img src='images/twitter_mini_profile.jpg'/></a> $title</p>";
 	       print "</li>\n";

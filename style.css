@@ -149,6 +149,10 @@ body {
 	margin-right: auto;
 }
 
+#copyright img {
+	vertical-align: middle;
+}
+
 /* Image Preview */
 #img-preview {
 z-index: 999;

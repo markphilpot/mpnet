@@ -378,7 +378,7 @@ catch(PDOException $e)
       </div> <!-- end github -->
       
       <div id="copyright">
-      	<p>Copyright 1998-2010 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0; vertical-align: bottom;" src="http://i.creativecommons.org/l/by-sa/3.0/us/80x15.png" /></a>
+      	<p>Copyright 1998-2010 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" src="http://i.creativecommons.org/l/by-sa/3.0/us/80x15.png" /></a>
       	 <a href="http://github.com/griphiam/mpnet">src</a> <a href="http://www.markphilpot.net/atom"><img src="images/feed-icon-14x14.png"/></a></p>
       </div> <!-- end copyright -->
 

@@ -34,7 +34,7 @@ catch(PDOException $e)
 
 ?>
 
-<!DOCTYPE html lang="en">
+<!DOCTYPE html>
 <head>
    <meta charset="utf-8">
    <link rel="stylesheet" href="style.css" type="text/css"/>
@@ -43,7 +43,7 @@ catch(PDOException $e)
    <script type="text/javascript" src="lib/jquery-lightbox-0.5/js/jquery.lightbox-0.5.js"></script>
    <script type="text/javascript" src="lib/jquery.preview.js"></script>
    <link rel="stylesheet" type="text/css" href="lib/jquery-lightbox-0.5/css/jquery.lightbox-0.5.css" media="screen" />
-   <link rel="alternate" type="application/atom+xml" src="http://www.markphilpot.net/atom"/>
+   <link rel="alternate" type="application/atom+xml" href="http://www.markphilpot.net/atom"/>
 </head>
 
 <body>
@@ -98,7 +98,7 @@ catch(PDOException $e)
 	       	print "<p>$desc</p>";
 	       	print "</li>\n";
 	    }
-	    print "<ul/>";
+	    print "</ul>";
 	 }
 	 catch(PDOException $e)
 	 {

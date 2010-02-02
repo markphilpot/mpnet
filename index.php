@@ -43,6 +43,7 @@ catch(PDOException $e)
    <script type="text/javascript" src="lib/jquery-lightbox-0.5/js/jquery.lightbox-0.5.js"></script>
    <script type="text/javascript" src="lib/jquery.preview.js"></script>
    <link rel="stylesheet" type="text/css" href="lib/jquery-lightbox-0.5/css/jquery.lightbox-0.5.css" media="screen" />
+   <link rel="alternate" type="application/atom+xml" src="http://www.markphilpot.net/atom"/>
 </head>
 
 <body>
@@ -209,7 +210,8 @@ catch(PDOException $e)
 	       $title = $data['title'];
 	       $desc = $data['description'];
 	       $title = preg_replace("/griphiam:/","", $title);
-	       $title = preg_replace("/@([\w]*)/", "<a href='http://twitter.com/$1'>@$1</a>", $title);
+	       $title = preg_replace("/@([\w]*)/", "<a href='http://twitter.com/$1'>@$1</a>", $title); // add links to twitter users
+	       $title = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1">$1</a>', $title); // add links to links
 	       print "<p><a href='$link'><img src='images/twitter_mini_profile.jpg'/></a> $title</p>";
 	       print "</li>\n";
 	    }
@@ -317,10 +319,10 @@ catch(PDOException $e)
 	    foreach($result as $row)
 	    {
 	       $data = unserialize($row['data']);
-	       $link = $data['link'];
-	       $thumb = $data['thumbnail'];
-	       $title = $data['title'];
-	       $desc = $data['description'];
+	       $link = preg_replace('/\?.*/','',trim($data['link'])); // Remove query paramters from link
+	       $thumb = trim($data['thumbnail']);
+	       $title = trim($data['title']);
+	       $desc = trim($data['description']);
 	       print "<a href='$link' title='$title'>\n";
 	       print "<img src='$thumb' alt='$title' />\n";
 	       print "</a>";
@@ -376,7 +378,7 @@ catch(PDOException $e)
       
       <div id="copyright">
       	<p>Copyright 1998-2010 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0; vertical-align: bottom;" src="http://i.creativecommons.org/l/by-sa/3.0/us/80x15.png" /></a>
-      	 <a href="http://github.com/griphiam/mpnet">src</a></p>
+      	 <a href="http://github.com/griphiam/mpnet">src</a> <a href="http://www.markphilpot.net/atom"><img src="images/feed-icon-14x14.png"/></a></p>
       </div>
       
 <script type="text/javascript">

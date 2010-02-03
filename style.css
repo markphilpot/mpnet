@@ -158,6 +158,10 @@ body {
 	margin-right: 5.0em;
 }
 
+#youtube div.content a {
+	padding-right: 1.65em;
+}
+
 #delicious li {
 	padding: 0 0 0.4em 0;
 }

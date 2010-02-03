@@ -13,6 +13,7 @@ $twitter_feed = 11;
 $goodreads_feed = 13;
 $github_feed = 16;
 $greader_feed = 5;
+$youtube_feed = 10;
 
 $db;
 $base_sql = "select t1.*, t2.feed, t2.options from wp_lifestream_event as t1 inner join wp_lifestream_feeds as t2 on t1.feed_id = t2.id where t2.id = :feed order by t1.timestamp desc limit :limit";
@@ -261,6 +262,43 @@ catch(PDOException $e)
 	       $img = preg_replace("/_s/","",$thumb);
 	       //print_r($data);
 	       print "<a href='$img' title='$title'>\n";
+	       print "<img src='$thumb' alt='$title' />\n";
+	       print "</a>";
+	    }
+	 }
+	 catch(PDOException $e)
+	 {
+	    print "<h2>DB Error</h2>";
+	 }
+	 ?>
+	 </div>
+      </div> <!-- end flickr -->
+      
+      <div id="youtube">
+	 <div class="description">
+	    <h4>Video</h4>
+	    <p>My uploads and favorites</p>
+	    <p><a href="http://www.youtube.com/user/griphiam">Youtube Profile</a></p>
+	 </div>
+	 <div class="content">
+	 <?php
+	 try
+	 {
+	    $limit = 8;
+	    $statement->bindParam(':feed', $youtube_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+
+	    foreach($result as $row)
+	    {
+	       $data = unserialize($row['data']);
+	       $link = $data['link'];
+	       $thumb = $data['thumbnail'];
+	       $title = $data['title'];
+	       //print_r($data);
+	       print "<a href='$link' title='$title'>\n";
 	       print "<img src='$thumb' alt='$title' />\n";
 	       print "</a>";
 	    }

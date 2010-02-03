@@ -3,7 +3,7 @@ require_once('include/config.php');
 
 // Used to see what keys are available in the feed data
 
-$base_sql = "select t1.*, t2.feed, t2.options from wp_lifestream_event as t1 inner join wp_lifestream_feeds as t2 on t1.feed_id = t2.id order by t1.timestamp desc limit 60";
+$base_sql = "select t1.*, t2.feed, t2.options from wp_lifestream_event as t1 inner join wp_lifestream_feeds as t2 on t1.feed_id = t2.id order by t1.timestamp desc";
 
 try
 {

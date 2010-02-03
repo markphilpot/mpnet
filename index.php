@@ -20,6 +20,8 @@ $base_sql_combine = "select t1.*, t2.feed, t2.options from wp_lifestream_event a
 $statement;
 $statment_combine;
 
+$date_format = "n.j.Y";
+
 try
 {
    $db = new PDO("mysql:host=$host;dbname=$database", $user);
@@ -80,7 +82,7 @@ catch(PDOException $e)
 	    $last_title = "";
 	    foreach($result as $row)
 	    {
-	    	print "<li>";
+	    	print "<li class='rel'>";
 	       $data = unserialize($row['data']);
 	       $title = $data['title'];
 	       if($title == $last_title)
@@ -94,8 +96,9 @@ catch(PDOException $e)
 	       		print "<h2><a href='$link' title='$title'>$title</a></h2>\n";
 	       	else
 	       		print "<h2><a href='$link' rel='$thumb' class='preview' title='$title'>$title</a></h2>\n";
-	       
+	       $date = date($date_format,$data['date']);
 	       	print "<p>$desc</p>";
+	       	print "<span class='date'>$date</span>";
 	       	print "</li>\n";
 	    }
 	    print "</ul>";
@@ -127,12 +130,14 @@ catch(PDOException $e)
 	    print "<ul>\n";
 	    foreach($result as $row)
 	    {
-	       print "<li>";
+	       print "<li class='rel'>";
 	       $data = unserialize($row['data']);
 	       $link = $data['link'];
 	       $title = $data['title'];
 	       $desc = $data['description'];
+	       $date = date($date_format,$data['date']);
 	       print "<p><a href='$link'>$title</a></p>";
+	       print "<span class='date'>$date</span>";
 	       print "</li>\n";
 	    }
 	    print "</ul>";
@@ -148,7 +153,8 @@ catch(PDOException $e)
       <div id="facebook">
 	 <div class="description">
 	    <h4>Facebook</h4>
-	    <p>Share & Share Alike</p>
+	    <p>Essential social networking</p>
+	    <p><a href="http://www.facebook.com/mark.philpot">Facebook Profile</a></p>
 	 </div>
 	 <div class="content">
 	 <?php
@@ -166,13 +172,14 @@ catch(PDOException $e)
 	    foreach($result as $row)
 	    {
 	       // Add style between share entry and status entry
-	       print "<li>";
+	       print "<li class='rel'>";
 	       $data = unserialize($row['data']);
 	       $link = $data['link'];
-	       $title = $data['title'];
+	       $title = preg_replace("/^Mark /","",$data['title']);
 	       $desc = $data['description'];
-	       $title = preg_replace("/^Mark /","",$title);
+	       $date = date($date_format,$data['date']);
 	       print "<p><a href='$link'>$title</a></p>";
+	       print "<span class='date'>$date</span>";
 	       print "</li>\n";
 	    }
 	    print "</ul>";
@@ -204,7 +211,7 @@ catch(PDOException $e)
 	    print "<ul>\n";
 	    foreach($result as $row)
 	    {
-	       print "<li>";
+	       print "<li class='rel'>";
 	       $data = unserialize($row['data']);
 	       $link = $data['link'];
 	       $title = $data['title'];
@@ -212,7 +219,9 @@ catch(PDOException $e)
 	       $title = preg_replace("/griphiam:/","", $title);
 	       $title = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1">$1</a>', $title); // add links to links
 	       $title = preg_replace("/@([\w]*)/", "<a href='http://twitter.com/$1'>@$1</a>", $title); // add links to twitter users
+	       $date = date($date_format,$data['date']);
 	       print "<p><a href='$link'><img src='images/twitter_mini_profile.jpg'/></a> $title</p>";
+	       print "<span class='date'>$date</span>";
 	       print "</li>\n";
 	    }
 	    print "</ul>";
@@ -229,6 +238,7 @@ catch(PDOException $e)
 	 <div class="description">
 	    <h4>Photography</h4>
 	    <p>Aspiring amature photographer</p>
+	    <p><a href="http://flickr.com/photos/markphilpot">Flickr Gallery</a></p>
 	 </div>
 	 <div class="content">
 	 <?php
@@ -266,7 +276,7 @@ catch(PDOException $e)
       <div id="delicious">
 	 <div class="description">
 	    <h4>Delicious</h4>
-	    <p>My link collection...</p>
+	    <p>My link collection</p>
 	 </div>
 	 <div class="content">
 	 <?php
@@ -303,7 +313,7 @@ catch(PDOException $e)
       <div id="goodreads">
 	 <div class="description">
 	    <h4>Goodreads</h4>
-	    <p>What I'm reading</p>
+	    <p>What I've recently read</p>
 	 </div>
 	 <div class="content">
 	 <?php
@@ -340,7 +350,7 @@ catch(PDOException $e)
       <div id="github">
 	 <div class="description">
 	    <h4>Development</h4>
-	    <p>Personal development streams from github</p>
+	    <p>Personal development streams from my <a href="http://github.com/griphiam">github</a> repositories</p>
 	 </div>
 	 <div class="content">
 	 <?php
@@ -364,7 +374,8 @@ catch(PDOException $e)
 	       $rep_bak;
 	       preg_match("%github\.com/(.*)/commits.*%",$link,$rep_back);
 	       $rep = isset($data['repository']) ? $data['repository'] : $rep_back[1];
-	       print "<p>Commited <a href='$link'>$title</a> to <a href='http://github.com/$rep'>$rep</a></p>";
+	       $date = date($date_format,$data['date']);
+	       print "<p>Commited <a href='$link'>$title</a> to <a href='http://github.com/$rep'>$rep</a> [$date]</p>";
 	       print "</li>\n";
 	    }
 	    print "</ul>";
@@ -400,7 +411,7 @@ catch(PDOException $e)
 
 <script type="text/javascript">
 $(function() {
-	$('#flickr a').lightBox({
+	$('#flickr div.content a').lightBox({
 			imageLoading: 'lib/jquery-lightbox-0.5/images/lightbox-ico-loading.gif',
 			imageBtnClose: 'lib/jquery-lightbox-0.5/images/lightbox-btn-close.gif'
 	}); // Select all links in object with gallery ID

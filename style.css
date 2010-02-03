@@ -98,6 +98,17 @@ body {
 	padding: 2.2em 0 0 0;
 }
 
+.date {
+	position: absolute;
+	top: 0em;
+	right: 0em;
+	font-size: 0.9em;
+}
+
+.rel {
+	position: relative;
+}
+
 #logo h1 {
 	margin: 0.5em 0 0 1.3em;
 	font-size: 2em;
@@ -111,12 +122,24 @@ body {
 	padding: 0 0 0.7em 0;
 }
 
+#blog li p {
+	margin-right: 5.0em;
+}
+
 #greader li {
 	padding: 0 0 0.7em 0;
 }
 
+#greader li p {
+	margin-right: 5.0em;
+}
+
 #facebook li {
-	padding: 0 0 0.7em 0;
+	padding: 0 0 0.9em 0;
+}
+
+#facebook li p {
+	margin-right: 5.0em;
 }
 
 #twitter img {
@@ -129,6 +152,10 @@ body {
 	padding: 0 0 0.7em 0;
 	line-height: 1.2em;
 	min-height: 2em;
+}
+
+#twitter li p {
+	margin-right: 5.0em;
 }
 
 #delicious li {

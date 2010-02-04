@@ -179,7 +179,12 @@ catch(PDOException $e)
 	       $title = preg_replace("/^Mark /","",$data['title']);
 	       $desc = $data['description'];
 	       $date = date($date_format,$data['date']);
-	       print "<p><a href='$link'>$title</a></p>";
+	       preg_match("%</span><span>(.*)</span><span>%s", $desc, $comments);
+
+	       if(isset($comments[1]))
+	       		print "<p><a href='$link'>$title</a> :: <span class='em'>".$comments[1]."</span></p>";
+	       else
+	       		print "<p><a href='$link'>$title</a></p>";
 	       print "<span class='date'>$date</span>";
 	       print "</li>\n";
 	    }

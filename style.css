@@ -33,6 +33,12 @@ p {
 	padding: 0;
 }
 
+.em {
+	/* Graublau doesn't support italic
+	font-style:italic;
+	*/
+}
+
 /* Fonts */
 @font-face {
     font-family: GraublauWeb;

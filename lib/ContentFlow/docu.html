@@ -1,0 +1,694 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <link rel="stylesheet" title="Standard" href="styles.css" type="text/css" media="screen" />
+</head>
+<body>
+
+    <h1 id="title"><img src="title.png"/></h1>
+    <h3 style="text-align: center; margin: 10px 0 30px 0; text-decoration: none;">version 0.7.2</h3>
+
+    <ul id="menu">
+        <li><a href="index.html">start</a></li>
+        <li><a href="docu.html">documentation</a></li>
+        <li><a href="changelog.html">changelog</a></li>
+        <li><a href="license.html">license</a></li>
+        <li><a href="mailto:contentflow@jacksasylum.eu">contact</a></li>
+    </ul>
+
+    <div class="maincontent">
+
+
+
+    <div class="maincontent">
+
+    
+        <h2>Documentation</h2>
+        
+                <div class="totop"><a href="javascript: switchBlock('usage')">Usage</a><a href="javascript: switchBlock('config')">Configuration</a><a href="javascript: switchBlock('options')">Options</a> <a href="javascript: switchBlock('methods')">Methods</a> <a href="javascript: switchBlock('keywords')">position Keywords</a><a href="javascript: switchBlock('objects')">Objects</a></div>
+
+            <div id="usageBlock" class="block">
+        <div id="Usage" name="Usage"></div>
+        <style>
+            .tab {
+                padding: 10px;
+                border: 1px solid #222;
+                float: left;
+                font-size: 18px;
+background-color: #222;
+            }
+        </style>
+
+        <script>
+        function toggleBlock (id) { 
+            var B = document.getElementById('basic');
+            var F = document.getElementById('full');
+            var BT = document.getElementById('basicTab');
+            var FT = document.getElementById('fullTab');
+            switch (id) {
+                case 'basic':
+                    var active = B;
+                    var old = F;
+                    var activeTab = BT;
+                    var oldTab = FT;
+                    break;
+                case 'full':
+                    var active = F;
+                    var old = B;
+                    var activeTab = FT;
+                    var oldTab = BT;
+                    break;
+            }
+            active.style.display = "block";
+            old.style.display = "none";
+
+            activeTab.style.borderBottomColor = "#000";
+            oldTab.style.borderBottomColor = "#222";
+
+            activeTab.style.backgroundColor = "#000";
+            oldTab.style.backgroundColor = "#222";
+        };
+        </script>
+        
+        <div style="margin-bottom: -1px; z-imdex: 100; width: 100%;">
+            <a href="javascript: toggleBlock('basic')"><div id="basicTab" class="tab" style="border-bottom-color: black; background-color: black;">Basic usage</div></a>
+            <a href="javascript: toggleBlock('full')"><div id="fullTab" class="tab" style="background-color: #222;">Full usage</div></a>
+            <div class="clear"></div>
+        </div>
+
+        <div id="basic" style="display: block; border: 1px solid #222; padding: 2em; margin-bottom: 2em;">
+            <ol>
+                <li>
+                    First extract all files in the same directory.
+                    <ul>
+                        <li>To run ContentFlow you only need 'contentflow.js', 'contentflow.css' and the 'img' directory.</li>
+                    </ul>
+                </li>
+
+                <div name="init" id="init"></div>
+                <li>
+                    Now load the ContentFlow script by adding the following code to the head of your html file:
+                    <pre><code>
+        &lt;script language="JavaScript" type="text/javascript" src="PATH/contentflow.js"&gt;&lt;/script&gt;
+                    </code></pre>
+                    Where PATH is the path to the directory where you extracted ContentFlow to.
+                </li>
+
+                <li>
+                Create the needed (X)HTML structure. The minimal (X)HTML structure needed is something like this:
+                <pre><code>
+        &lt;div class="ContentFlow"&gt;
+            &lt;div class="flow"&gt;
+                &lt;div class="item"&gt;&lt;img class="content" src="someImageFile.jpg"/&gt;&lt;/div&gt;
+                <b>(<i>Add as many items as you like.</i>)</b>
+            &lt;/div&gt;
+        &lt;/div&gt;
+                </code></pre>
+            </li>
+
+            <li>
+                That's it. Nothing more to do.
+            </li>
+            </ol>
+        </div>
+
+
+
+        <div id="full" style="display: none; border: 1px solid #222; padding: 2em; margin-bottom: 2em;">
+
+            <h3>Files</h3>
+            <dl>
+                <dt>mycontentflow.css.example</dt>
+                <dd>This is an example file which will help you to style your ContentFlow globaly. Rename it to 'mycontentflow.css' to utilize it.
+                    <!-- make the changes you like and add 'myStyle' to the load attribute of the script tag.-->
+                </dd>
+                <dt>ContentflowAddOn_DEFAULT.js &amp; ContentflowAddOn_DEFAULT.css</dt>
+                <dd>This are example files from which you can build your own <a href="        addons.php        ">AddOn</a>.</dt>
+            </dl>
+
+
+
+            <h3>Script tag</h3>
+            <p>
+            By adding the 'load' attribute to the script tag you can load one or more <a href="        addons.php        ">AddOn</a>. The AddOns have to be given in the form of a space separated list and 
+            are loaded in the same order as given.
+            <!-- <br/>
+            Contenflow knows about the special AddOn 'myStyle', which will load the stylesheet 'mycontentflow.css'.
+    -->
+            </p>
+
+            <pre><code>
+        &lt;script language="JavaScript" type="text/javascript" src="PATH/contentflow.js" <b>load="SomeAddOnName SomeOtherAddOnName"</b> &gt;&lt;/script&gt;
+            </code></pre>
+
+            <p style="font-size:0.9em">
+            Where PATH is the path to the directory where you extracted ContentFlow to.<br/>
+            <i>'contentflow.js'</i> is a compressed (using <a href="http://developer.yahoo.com/yui/compressor/">yuicompressor</a>) version of <i>'contentflow_src.js'</i>. If you run in any problem with the compressed version, just change <i>'contentflow.js'</i> to <i>'contentflow_src.js'</i> (and drop me note).
+            </p>
+
+            <h3>(X)HTML</h3>
+
+            <div name="loader" id="loader"></div>
+            <p>
+                This code example shows all (X)HTML elements and element attributes ContentFlow knows about:
+            </p>
+            <pre><code>
+        &lt;div id="myFantasticFlow" class="ContentFlow" useAddOns="AddOns1 AddOn2 ..."&gt;
+            &lt;div class="loadIndicator"&gt;&lt;div class="indicator"&gt;&lt;/div&gt;&lt;/div&gt;
+            
+            &lt;div class="flow"&gt;
+                &lt;div class="item" href="URL" target="TARGET" &gt;
+                    &lt;img class="content" src="someImageFile.jpg" href="URL" target="TARGET" /&gt; 
+                    &lt;div class="caption"&gt;foobar&lt;/div&gt;
+                    &lt;div class="label"&gt;Slider Label&lt;/div&gt;
+                &lt;/div&gt;
+                <b>(<i>Add as many items as you like.</i>)</b>
+            &lt;/div&gt;
+
+            &lt;div class="globalCaption"&gt;&lt;/div&gt;
+            &lt;div class="scrollbar"&gt;
+                &lt;div class="preButton"&gt;&lt;/div&gt;
+                &lt;div class="nextButton"&gt;&lt;/div&gt;
+                &lt;div class="slider"&gt;&lt;div class="position"&gt;&lt;/div&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+            </code></pre>
+            <p>
+                The '<u>loadIndicator</u>', '<u>caption</u>', '<u>label</u>', '<u>globalCaption</u>', '<u>scrollbar</u>', '<u>preButton</u>', '<u>nextButton</u>', '<u>slider</u> and '<u>position</u>' elements are <u>optional</u>.
+                ContentFlow will auto detect and utilize them if they exist.
+            </p>
+            <dl>
+                <div name="useAddOns" id="useAddOns"></div>
+                <dt>ContentFlow</dt>
+                <dd>Main ContentFlow wrapper. All elements of class 'ContentFlow' will be initialized.<br/>
+                    If style attribute 'height' is set, maxItemHeight will be set accordingly.<br/>
+                    <i><b>If the attribute 'useAddOns' is given only the listed AddOns will be used for this ContentFlow.</b></i>
+                </dd>
+
+                <dt>flow</dt>
+                <dd>Wrapper around all flow items.<br/>
+                    If style attribute 'height' is set, maxItemHeight will be set accordingly.
+                </dd> 
+                <dl>
+                    <div name="item" id="item"></div>
+                    <dt>item</dt>
+                    <dd>
+                        If you want to use an item as a <b>link</b>, just add an <b>'href'</b> attribute to the <u>item</u> or it's <u>content</u>. A <b>'target'</b> attribute will be taken into account.
+                    </dd>
+                    <dl>
+                        <dt>content</dt>
+                        <dd>The actual content of an item. Can be anything.<br/>
+                            If content is not in image, beware that the item itself will be scaled and <u>not</u> the content!
+                        </dd>
+                        <div name="caption" id="caption"></div>
+                        <dt>caption<dt>
+                        <dd>If exists will be used as the caption text of the item.<br/>
+                            By default it is hidden and will be used for the global caption.<br/>
+                            Can contain any HTML content.<br/>
+                            To utilize the caption as a link, just make the whole caption a link (use an a-tag instead of a div-tag) or put a link inside it.
+                        </dd>
+                        <dt>label<dt>
+                        <dd>
+                            If exists and <u>position</u> element exists, it will be used as the position text label.<br/>
+                            It's great to use the scrollbar as a timeline.
+                        </dd>
+                    </dl>
+                </dl>
+
+                <dt>loadIndicator<dt>
+                <dd>If exists will show a loading indicator, while images are loaded.</dd>
+
+                <dt>globalCaption<dt>
+                <dd>If exists and caption element of active item exists will show the caption of the active item.</dd>
+
+                <div name="scrollbar" id="scrollbar"></div>
+                <dt>scrollbar<dt>
+                <dd>If exists will show a clickable scrollbar.</dd>
+                <dl>
+                    <dt>slider<dt>
+                    <dd>If exists will show a dragable  button on the slider.</dd>
+                    <dl>
+                        <dt>position<dt>
+                        <dd>If exists will show position label. Defaults to the item number.</dd>
+                    </dl>
+                </dl>
+
+                <div name="buttons" id="buttons"></div>
+                <dt>preButton<dt>
+                <dd>This element can be anywhere within the ContentFlow. If exists it will fire the onclickPreButton method.<br/>
+                    By default it will move the flow to the previous item.
+                </dd>
+                <dt>nextButton<dt>
+                <dd>This element can be anywhere within the ContentFlow. If exists it will fire the onclickNextButton method.<br/>
+                    By default it will move the flow to the next item.
+                </dd>
+            </dl>
+
+            <h3>Configuration</h3>
+            <p>You can configure each ContentFlow independently or globally. Take a look at the <a href="            javascript: switchBlock('config','');
+        ">configuration</a>  and <a href="            javascript: switchBlock('options','');
+        ">options</a> descriptions for an explanation.</p>
+        </div>
+
+    </div>
+            <div id="configBlock" class="block">
+        <h2>Configuration</h2>
+        <p>
+        If you want to adjust ContentFlow to your needs you have two possibilities. First you can use a <a href="        addons.php        ">AddOn</a> or you can use a runtime configuration.
+        </p>
+
+        <!-- addon conf -->
+        <h3>AddOn configuration</h3>
+        I think, that is the more convenient method.
+        <ol>
+            <li>Copy the file 'ContentFlowAddOn_DEAFULT.js' to 'ContentFlowAddOn_MyAddOn.js'</li>
+            <li>Change the name of the AddOn (first line of code in the AddOn file) to 'MyAddOn'</li>
+            <li>Make the changes you like.</li>
+            <li>
+            Add the 'load' attribute to the script-tag which loads ContentFlow. Now add any AddOns you would like to use as a space separated list.<br/>
+            It should now look like this:
+            <pre><code>
+    &lt;script language="JavaScript" type="text/javascript" src="PATH/contentflow.js" <b>load="MyAddOn"</b> &gt;&lt;/script&gt;
+            </code></pre>
+            </li>
+            <li>Reload your page :-)</li>
+        </ol>
+
+        <!-- runtime conf -->
+        <div name="runtime" id="runtime"></div>
+        <h3>Runtime configuration</h3>
+        <p>
+            Create a new Object from the Class ContentFlow and pass the element containing the flow as its parameter, like this:
+        </p>
+        <pre><code>
+    var myNewFlow = new ContentFlow('myFantasicFlow'[, OPTIONS ]);
+        </code></pre>
+        <dl>
+            <dt>OPTIONS</dt>
+            <dd>is an optional <a href="            javascript: switchBlock('objects','#confObj');
+        ">configuration data object</a> where co can define the <a href="            javascript: switchBlock('options','#options');
+        ">options.</a></dd>
+            <!--<dt>initOnLoad</dt>-->
+            <!--<dd>is optional. If set to 'false' no auto initialization on 'window.load' will happen. You have to use the public method init() instead. <u>Default:</u> true</dd>-->
+        </dl>
+    </div>
+            <div id="optionsBlock" class="block">
+        <h2 id="Options" name="Options">Options</h2>
+        <p>The options can be given on manual object creation in the form of a <a href="            javascript: switchBlock('objects','#conf');
+        ">data object</a>, set with the <a href="            javascript: switchBlock('methods','');
+        ">setConfig method</a> or set within an AddOn.</p>
+
+        <p>The following options can be used:</p>
+        <dl id="options" style="font-family: sans-serif">
+            <div name="useAddOns" id="useAddOns"></div>
+            <dt><span>useAddOns</span> := string | array (default: all)</dt>
+            <dd>Addons this ContentFlow should use (all, none, [AddOn1, ... , AddOnN])</dd>
+            <dt><span>loadingTimeout</span> := int (default: 30000)</dt>
+            <dd>Grace time in milliseconds for images to load.</dd>
+            <dt><span>activeElement</span> := string (default: content)</dt>
+            <dd>This determents which part of each item will be handle the click events<br/>
+            can be 'content' or 'item'|'element'
+            </dd>
+
+            <dt><span>maxItemHeight</span> := int (default: 0)</dt>
+            <dd>Maximum item height in px. If set to a value greater than '0' the item size will be calculated from this value instead relative to the width of the ContentFlow.
+            <dt><span>scaleFactor</span> := float (default: 1.0)</dt>
+            <dd>Factor by which the item will be scaled.</dd>
+            <dt><span>scaleFactorLandscape</span> := float | string (default: 1.0)</dt>
+            <dd>float := Factor to scale content images in portray format by.<br/>
+                string := if set to 'max' the height of an landscape image content will be set to the height of the item.
+            </dd>
+            <dt><span>relativeItemPosition</span> := string (deafult: top center)</dt>
+            <dd>Position of item relative to it's coordinate.<br/>
+                It can contain the keywords top/above, bottom/below, left, right and center.<br/>
+                So by default the item will be place above the coordinate point and centered horizontally.<br/>
+                If set this option overrides the calcRelativeItemPosition option!
+            </dd>
+            <dt><span>contentPosition</span> := string (default: bottom)</dt>
+            <dd>Position of the items content relative to the item itselfe.<br/>
+                Can be one of the keywords top, center/middle or bottom.
+            </dd>
+
+            <hr style="width: 75%; height: 1px; margin: 30px auto;"/>
+
+            <div name="circularFlow" id="circularFlow"></div>
+            <dt><span>circularFlow</span> := bool (default: true)</dt>
+            <dd>Should the Flow wrap around?</dt>
+            <dt><span>verticalFlow</span> := bool (default: false)</dt>
+            <dd>Will turn the ContentFlow 90 degree counterclockwise.<br/>
+                This will automaticaly swap calculated positions and sizes were needed. You do not have to adjust any calculations or sizes. Should work with any AddOn outof the box.
+            </dd>
+<!--
+            <div name="opacity" id="opacity"></div>
+            <dt><span>endOpacity</span> := float (default: 1)</dt>
+            <dd>The opacity of the last visible item on either side. The opacity of each item will be calculated by the 'calcOpacity' function.</dd>
+-->
+            <dt><span>visibleItems</span> := int (default: 0)</dt>
+            <dd>Number of Items to show on either side of the active Item. If set to '0' it will default so the square root of the number of items.</dd>
+            <dt><span>startItem</span> := string | int (default: center)</dt>
+            <dd>Active Content item to start with. Can be either a <a href="            javascript: switchBlock('keywords','#pkw');
+        ">position keyword</a> or an integer.</dd>
+            <dt><span>scrollInFrom</span> := string | int (default: pre)</dt>
+            <dd>Scrollin from Item. Can be either a <a href="            javascript: switchBlock('keywords','#pkw');
+        ">position keyword</a>, "none" or an integer. If set to "none" the flow will not scroll in.</dd>
+
+            <hr style="width: 75%; height: 1px; margin: 30px auto;"/>
+
+            <h3 style="text-align: center;">flow interaction</h3>
+
+            <dt><span>flowSpeedFactor</span> := float (default: 1.0)</dt>
+            <dd>A flowSpeedFactor &gt; 1 will speedup the scrollspeed, while a factor between 0 and 1 will slow it down</dd>
+            <div name="drag" id="drag"></div>
+            <dt><span>flowDragFriction</span> := float (default: 1.0)</dt>
+            <dd>Determents how hard it is to drag the flow.<br/>
+                If set to '0' dragging of the flow is deactivated.
+            </dd>
+            <div name="wheel" id="wheel"></div>
+            <dt><span>scrollWheelSpeed</span> := float (default: 1.0)</dt>
+            <dd>Scales by how many items the flow will be moved with one usage of the mousewheel.<br/>
+                Negative values will revers the scroll direction.<br/>
+                If set to '0' scrolling with the mouse wheel is deactivated.
+            </dd>
+            <div name="keys" id="keys"></div>
+            <dt><span>keys</span> := object (default: see below)</dt>
+            <dd>Defines the keyCodes and the functions, which are triggerd on a keydown event within the ContentFlow. All defined functions are bound to the ContentFlow object.</br/>
+                To disable this functionality set keys = {} (empty object).<br/>
+                Default setting:
+                <code><pre style="font-family: monospace">
+
+    {
+        37: function () { this.moveTo('pre') },         // left arrow
+        38: function () { this.moveTo('visibleNext') }, // up arrow
+        39: function () { this.moveTo('next') },        // right arrow
+        40: function () { this.moveTo('visiblePre') }   // down arrow
+    }
+                </pre></code>
+            </dd>
+            
+            <hr style="width: 75%; height: 1px; margin: 30px auto;"/>
+
+            <h3 style="text-align: center;">reflections</h3>
+
+            <div name="reflection" id="reflection"></div>
+            <dt><span>reflectionType</span> := string (default: clientside)</dt>
+            <dd>Reflection generation type. Can be 'clientside', 'serverside' or 'none'.<br/>
+                clientside: reflection is generated by the browser<br/>
+                serverside: reflection is received from the server according to 'reflectionServerSrc'<br/>
+                none: no reflection will be used/generated.
+            </dd>
+            <dt><span>reflectionColor</span> := string (default: transparent)</dt>
+            <dd>Set the "surface"-color of the reflection. Can be "none", "transparent", or #RRGGBB (hex RGB values)<br/>
+                If set to 'overlay' the image given by the option 'reflectionOverlaySrc' will be lain over the reflection.
+            </dd>
+            <dt><span>reflectionHeight</span> := float (default: 0.5)</dt>
+            <dd>Set the size of the reflection image relative to the original image</dd>
+            <dt><span>negativeMarginOnFloat</span> := string | float (default: auto)</dt>
+            <dd>Determines if the 'flow' element gets a negative margin. Can be 'auto', 'none' or an float value.<br/>
+                auto: size of the negative margin will be set automatically (normally eq. float value 1.0)<br/>
+                float: size of the negative margin relative to 'refelctionHeight'<br/>
+                none: no negative margin is set.
+            </dd>
+            <dt><span>reflectionServerSrc</span> := string (default: {URLTO}{FILENAME}_reflection.{EXT})</dt>
+            <dd>URL of the serverside reflection image.<br/>
+                Automatic substitution of the strings '{URLTO}', '{FILE}', '{FILENAME}', '{EXT}' will be done.
+                The values of thees is determint from the original image-src URL according to to thees assumptions: SRCURL = {URLTO}{FILE}; {FILE} = {FILENAME}.{EXT}
+            </dd>
+
+            <hr style="width: 75%; height: 1px; margin: 30px auto;"/>
+
+            <h3 style="text-align: center">event handling</h3>
+
+            <div name="caItem" id="caItem"></div>
+            <dt><span>onclickInactiveItem</span> := function(obj item)</dt>
+            <dd>called if an inactive item is clicked.<br/>
+                The function will be bound to the ContenFlow object, so 'this' refers to the ContentFlow!
+            </dd>
+            <dt><span>onclickActiveItem</span> := function(obj item)</dt>
+            <dd>called if the active item is click.<br/>
+                The function will be bound to the ContenFlow object, so 'this' refers to the ContentFlow!
+            </dd>
+            
+            <dt><span>onMakeInactive</span> := function(obj item)</dt>
+            <dd>called if the active item becomes an inactive item.<br/>
+                The function will be bound to the ContenFlow object, so 'this' refers to the ContentFlow!
+            </dd>
+
+            <dt><span>onMakeActive</span> := function(obj item)</dt>
+            <dd>called if an item becomes the active item.<br/>
+                The function will be bound to the ContenFlow object, so 'this' refers to the ContentFlow!
+            </dd>
+            
+            <dt><span>onMoveTo</span> := function(obj item)</dt>
+            <dd>called each time a new target is set i.e by calling the moveTo method.<br/>
+                The function will be bound to the ContenFlow object, so 'this' refers to the ContentFlow!
+            </dd>
+
+            <dt><span>onReachTarget</span> := function(obj item)</dt>
+            <dd>called if the target item becomes the active item.<br/>
+                The function will be bound to the ContenFlow object, so 'this' refers to the ContentFlow!
+            </dd>
+            
+            <dt><span>onclickPreButton</span> := function(event event)</dt>
+            <dd>called to set the function, which is called if the 'pre' button item is clicked.<br/>
+                The function will be bound to the ContenFlow object, so 'this' refers to the ContentFlow!
+            </dd>
+            
+            <dt><span>onclickNextButton</span> := function(event event)</dt>
+            <dd>called to set the function, which is called if the 'next' button item is clicked.<br/>
+                The function will be bound to the ContenFlow object, so 'this' refers to the ContentFlow!
+            </dd>
+            
+            <hr style="width: 75%; height: 1px; margin: 30px auto;"/>
+
+            <h3 style="text-align: center">positioning and sizing methods</h3>
+
+            <dt><span>calcStepWidth</span> := function(float diff, float absDiff)</dt>
+            <dd>called to set the calculation function of the width of each step to get the next position of the flow.<br/>
+                The function will be bound to the ContenFlow object, so 'this' refers to the ContentFlow!<br/>
+                'diff' := targetItem - currentPosy<br/>
+                'absDiff' := absolute value of 'diff'<br/>
+                returns: float
+            </dd>
+
+            <dt><span>calcSize</span> :=function(float relativePosition, int side)</dt>
+            <dd>called to set the calculation function of the size of a visible item<br/>
+                The function will be bound to the ContenFlow object, so 'this' refers to the ContentFlow!<br/>
+                'relativePosition' := relative position of item (-visibleItems &lt;= relativePosition &lt;= visibleItems).<br/>
+                'side' := realtivePosition != 0 ? relativePosition/|relativePosition| : 0 (-1,0,1)<br/>
+                returns an object of type size := {width: w, height: h}<br/>
+                A usefull value you can use with in the function is 'this.maxHeight', which is the maximum height an item can have. By default the size of an item is based on this value.
+            </dd>
+            
+            <dt><span>calcCoordinates</span> := function(float relativePosition, int side)</dt>
+            <dd>called to calculate the position of an item element within the flow<br/>
+                'relativePosition' := relative position of item (-visibleItems &lt;= relativePosition &lt;= visibleItems).<br/>
+                'side' := realtivePosition != 0 ? relativePosition/|relativePosition| : 0 (-1,0,1)<br/>
+                returns an object of type position := {x: X, y: Y}<br/>
+                A useful value you can use with in the function is 'this.maxHeight', which is the maximum height an item can have.
+            </dd>
+            
+            <dt><span>calcRelativeItemPosition</span> := function(float relativePosition, int side, obj size)</dt>
+            <dd>called to calculate the position of an item element within the flow<br/>
+                Beware: this function will be overridden by the 'relativeItemPosition' option!<br/>
+                'relativePosition' := relative position of item (-visibleItems &lt;= relativePosition &lt;= visibleItems).<br/>
+                'side' := realtivePosition != 0 ? relativePosition/|relativePosition| : 0 (-1,0,1)<br/>
+                'size' := size object as return by calcSize
+                returns an object of type position := {x: x, y: y}<br/>
+            </dd>
+
+            <dt><span>calcZIndex</span> := function(float relativePosition, int side, int relativeIndex)</dt>
+            <dd>called to set the calculation function of the z-index of each item. The z-index is only valid within the flow itself.<br/>
+                The function will be bound to the ContenFlow object, so 'this' refers to the ContentFlow!<br/>
+                'relativePosition' := relative position of item (-visibleItems &lt;= relativePosition &lt;= visibleItems).<br/>
+                'side' := realtivePosition != 0 ? relativePosition/|relativePosition| : 0 (-1,0,1)<br/>
+                'relativeIndex' := position of item relative to active item (-visibleItems &lt;= relativeIndex &lt;= visibleItems).<br/>
+                returns: int z (-32768 &lt;= z &lt;= 32768)
+            </dt>
+
+            <dt><span>calcFontSize</span> := function(float relativePosition, int side, obj size)</dt>
+            <dd>called to set the calculation function of the relative font-size of an item<br/>
+                The function will be bound to the ContenFlow object, so 'this' refers to the ContentFlow!<br/>
+                'relativePosition' := relative position of item (-visibleItems &lt;= relativePosition &lt;= visibleItems).<br/>
+                'side' := realtivePosition != 0 ? relativePosition/|relativePosition| : 0 (-1,0,1)<br/>
+                'size' := size object as return by calcSize
+                returns: float fs (0.0 &lt;= fs)
+            </dt>
+<!--
+            <dt><span>calcOpacity</span> := function(float relativePosition, int side)</dt>
+            <dd>called to calculate the opacity of each item.<br/>
+                The function will be bound to the ContenFlow object, so 'this' refers to the ContentFlow!<br/>
+                'relativePosition' := relative position of item (-visibleItems &lt;= relativePosition &lt;= visibleItems).<br/>
+                'side' := realtivePosition != 0 ? relativePosition/|relativePosition| : 0 (-1,0,1)<br/>
+                returns: float fs (0.0 &lt;= opacity &lt;= 1.0)
+            </dd>
+-->
+        </dl>
+    </div>
+            <div id="methodsBlock" class="block">
+        <h2 id="Methods" name="Methods">Methods</h2>
+        <p>The following object methods are public.</p>
+        <dl id="methods">
+            <dt>setConfig(obj OPTIONS)</dt>
+            <dd>called to set options after object creation</dd>
+
+            <dt>getItem(int index)</dt>
+            <dd>returns the 'item' object at given index</dd>
+
+            <dt>getActiveItem()</dt>
+            <dd>called to get the currently active item.
+                returns the 'item' object of the active item.
+            </dd>
+
+            <dt>getNumberOfItems()</dt>
+            <dd>called to get the number of items currently in the flow</dd>
+
+            <dt>moveTo(int index | float pos | string keyword | obj item)</dt>
+            <dd>called to scroll to item.<br/>
+                'index' := scroll to item with index 'index'<br/>
+                'pos' := scroll to position 'pos'<br/>
+                'keyword' := scroll to position given by <a href="#pkw">position keyword</a>
+                'item' := scroll to item
+            </dd>
+
+            <dt>resize()</dt>
+            <dd>called to reinit sizes of flow items, after size of flow has changed.<br/>Is called if window is resized</dd>
+            
+            <div name="addItem" id="addItem"></div>
+            <dt>addItem(DOMnode element, int|string index)</dt>
+            <dd>called to add a new item 'element' to the flow at the position index. The element has to be a valid item element. So it must have at least this structure:<br/>
+                &lt;div class="item"&gt;&lt;img class="content" src="url/to/image"/&gt;&lt;/div&gt;<br/>
+                The index has to be an integer or one of the strings 'first', 'start', 'last' or 'end'.<br/>
+                returns: int index (index position of added item)
+            </dd>
+
+            <dt>rmItem([int index])</dt>
+            <dd>called to remove an item from the flow. If the parameter index is given the element at the index position 'index' will be removed, else the currently active item will be removed.
+                returns: DOMnode el (cleaned item node) 
+            </dd>
+
+        </dl>
+    </div>
+            <div id="keywordsBlock" class="block">
+        <h2 id="pkw" name="pkw">position keywords</h2>
+        <dl>
+            <dt>'start', 'first'</dt>
+            <dd>first item</dd>
+            <dt>'end', 'last'</dt>
+            <dd>last item</dd>
+            <dt>'middle', 'center'</dt>
+            <dd>item in the middle</dd>
+            <dt>'pre', 'previous', 'left'</dt>
+            <dd>previous item</dd>
+            <dt>'next', 'right'</dt>
+            <dd>next item</dd>
+            <dt>'visible', 'visiblePre' 'visibleLeft'</dt>
+            <dd>leftmost visible item</dd>
+            <dt>'visibleNext', 'visibleRight'</dt>
+            <dd>rightmost visible item</dd>
+        </dl>
+        <p>Where ever you can use a position keyword you can also use an integer for an exact position. A sanity check will be done automatically.</p>
+    </div>
+            <div id="objectsBlock" class="block">
+        <h2>Objects</h2>
+
+        <h3>ContentFlow</h3>
+        <p>This is the basic structure of a ContentFlow object.</p>
+        <code><pre style="font-family: monospace">
+
+        {
+            Container := guiElement
+            Flow := guiElement,
+            Scrollbar := guiElement,
+            Slider := guiElement,
+            maxHeight := int    // the maximum height an item can have in px
+        }
+        </pre></code>
+
+        <h3>guiElements</h3>
+        <p>A GUI element is a extended DOM object, with the following attributes.</p>
+        <code><pre style="font-family: monospace">
+
+        {
+            Dimensions := {
+                            height: int, //px
+                            width: int //px
+                          },
+            center := {
+                        x: int, //px
+                        y: int //px
+                      }
+        }
+        </pre></code>
+
+        <div name="conf" id="conf"></div>
+        <h3>Configuration</h3>
+        <p>The <a href="            javascript: switchBlock('options','');
+        ">options</a> can be passed to the ContentFlow on creation, 
+            by the <a href="            javascript: switchBlock('methods','');
+        ">setConfig method</a> or 
+            by an  <a href="        addons.php        ">AddOn</a> in the form of a data object.</p>
+        <div name="confObj" id="confObj"></div>
+        <code><pre style="font-family: monospace">
+
+        {
+            option1: value,
+            option2: value,
+            .
+            .
+            .
+            lastOption: value   // beware: last option must not end with a comma !
+        }
+        </pre></code>
+
+        <h3>Item</h3>
+        <p>An 'item' object represents an item within the ContentFlow and has the following structure.</p>
+        <code><pre style="font-family: monospace">
+
+        {
+            element := DOM-ELEMENT      // DOM element of the item
+            element.itemIndex   := int  // index of item
+            content := DOM-ELEMENT      // DOM element of the item content
+            caption := DOM-ELEMENT      // DOM element of the item caption
+            label   := DOM-ELEMENT      // DOM element of the item label
+            index   := int              // index of item
+        }
+        </pre></code>
+
+    </div>
+
+                <div class="totop"><a href="javascript: switchBlock('usage')">Usage</a><a href="javascript: switchBlock('config')">Configuration</a><a href="javascript: switchBlock('options')">Options</a> <a href="javascript: switchBlock('methods')">Methods</a> <a href="javascript: switchBlock('keywords')">position Keywords</a><a href="javascript: switchBlock('objects')">Objects</a></div>
+
+    
+
+    </div>
+
+    
+    <!-- last 23 lines -->
+    <script>
+        var activeBlock;
+        function switchBlock(ID, hash) {
+            if (!ID) ID = "usage";
+            switch (show) {
+            case 'usage':
+            case 'config':
+            case 'options':
+            case 'methods':
+            case 'keywords':
+            case 'objects':
+                ID = ID+"Block";
+                break;
+            default:
+                ID = "usageBlock";
+            }
+            if (activeBlock) activeBlock.style.display = "none";
+            activeBlock = document.getElementById(ID);
+            if (activeBlock) activeBlock.style.display = "block";
+            if (hash)
+                window.location.hash = hash;
+        }
+        if (!show) var show = "usage";
+        switchBlock(show);
+    </script>
+</body>
+</html>

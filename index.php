@@ -14,6 +14,7 @@ $goodreads_feed = 13;
 $github_feed = 16;
 $greader_feed = 5;
 $youtube_feed = 10;
+$visualizeus_feed = 4;
 
 $db;
 $base_sql = "select t1.*, t2.feed, t2.options from wp_lifestream_event as t1 inner join wp_lifestream_feeds as t2 on t1.feed_id = t2.id where t2.id = :feed order by t1.timestamp desc limit :limit";
@@ -45,6 +46,7 @@ catch(PDOException $e)
    <script type="text/javascript" src="lib/jquery-1.4.1.min.js"></script>
    <script type="text/javascript" src="lib/jquery-lightbox-0.5/js/jquery.lightbox-0.5.js"></script>
    <script type="text/javascript" src="lib/jquery.preview.js"></script>
+   <script type="text/javascript" src="lib/ContentFlow/contentflow_src.js" load="white"></script>
    <link rel="stylesheet" type="text/css" href="lib/jquery-lightbox-0.5/css/jquery.lightbox-0.5.css" media="screen" />
    <link rel="alternate" type="application/atom+xml" href="http://www.markphilpot.net/atom"/>
 </head>
@@ -431,6 +433,55 @@ catch(PDOException $e)
 	 </div>
       </div> <!-- end github -->
       
+      <div id="visualizeus">
+	 <div class="description">
+	    <h4>Image Bookmarking</h4>
+	    <p>Help hone my own photography by studing the works of others via <a href="http://vi.sualize.us/griphiam">vi.sualize.us</a>. In general tagging interesting images around the net.</p>
+	 </div>
+	 <div class="content">
+	 <?php
+	 try
+	 {
+	    $limit = 20;
+	    $statement->bindParam(':feed', $visualizeus_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+
+	    print "<div id='myflow' class='ContentFlow'>";
+	    print "<div class='flow'>\n";
+	    foreach($result as $row)
+	    {
+	    	
+	       $data = unserialize($row['data']);
+	       $link = $data['link'];
+	       $thumb = $data['thumbnail'];
+	       $title = $data['title'];
+	       $img = $data['image'];
+	       $img = preg_replace("/_s/","",$thumb);
+	       //print_r($data);
+	       //print "<a href='$img' title='$title'>\n";
+	       print "<div class='item'>";
+	       print "<img class='flowcontent' src='$thumb' alt='$title' href='$link' target='_blank'/>\n";
+	       print "<div class='caption'>$title</div>\n";
+	       //print "</a>";
+	       print "</div>\n";
+	    }
+	    print "</div><div class='globalCaption'></div>
+	    <div class='scrollbar'>
+                <div class='slider'><div class='position'></div></div>
+            </div>
+	    </div>\n";
+	 }
+	 catch(PDOException $e)
+	 {
+	    print "<h2>DB Error</h2>";
+	 }
+	 ?>
+	 </div>
+      </div> <!-- end flickr -->
+      
       <div id="copyright">
       	<p>Copyright 1998-2010 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" src="http://i.creativecommons.org/l/by-sa/3.0/us/80x15.png" /></a>
       	 <a href="http://github.com/griphiam/mpnet">src</a> <a href="http://www.markphilpot.net/atom"><img src="images/feed-icon-14x14.png"/></a></p>
@@ -459,6 +510,13 @@ $(function() {
 			imageBtnClose: 'lib/jquery-lightbox-0.5/images/lightbox-btn-close.gif'
 	}); // Select all links in object with gallery ID
 });
+
+var myNewFlow = new ContentFlow('myflow',{
+	maxItemHeight : 184,
+	startItem : 'first',
+	visibleItems : 3
+});
+
 </script>
 
 <script type="text/javascript"> 

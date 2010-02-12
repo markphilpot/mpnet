@@ -4,6 +4,7 @@
 // $host, $database, $user, $pass
 require_once('include/config.php');
 require_once('include/feeds.php');
+require_once('include/content.php');
 
 
 try
@@ -52,41 +53,18 @@ catch(PDOException $e)
 	    <p>Occasionally I need to write something longer than 140 characters, post a picture or comment on a video.</p>
 	    <p><a href="http://blog.mcstudios.net">turn on | tune in | strung out</a></p>
 	 </div>
-	 <div class="content">
+	 <div class="content rel">
 	 <?php
 	 try
 	 {
-	    $limit = 7;
+	    $limit = 5;
 	    $statement->bindParam(':feed', $blog_feed, PDO::PARAM_INT);
 	    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
 
 	    $statement->execute();
 	    $result = $statement->fetchAll();
 
-	    print "<ul>\n";
-	    $last_title = "";
-	    foreach($result as $row)
-	    {
-	    	print "<li class='rel'>";
-	       $data = unserialize($row['data']);
-	       $title = $data['title'];
-	       if($title == $last_title)
-			continue;
-	       else
-			$last_title = $title;
-	       $desc = $data['description'];
-	       $link = $data['link'];
-	       $thumb = $data['thumbnail'];
-	       	if(preg_match('/add-to-any/', $thumb))
-	       		print "<h2><a href='$link' title='$title'>$title</a></h2>\n";
-	       	else
-	       		print "<h2><a href='$link' rel='$thumb' class='preview' title='$title'>$title</a></h2>\n";
-	       $date = date($date_format,$data['date']);
-	       	print "<p>$desc</p>";
-	       	print "<span class='date'>$date</span>";
-	       	print "</li>\n";
-	    }
-	    print "</ul>";
+	    blog($result, $limit);
 	 }
 	 catch(PDOException $e)
 	 {
@@ -101,7 +79,7 @@ catch(PDOException $e)
 	    <h4>Feed Reader</h4>
 	    <p>Things I find interesting in my daily feeds</p>
 	 </div>
-	 <div class="content">
+	 <div class="content rel">
 	 <?php
 	 try
 	 {
@@ -112,20 +90,7 @@ catch(PDOException $e)
 	    $statement->execute();
 	    $result = $statement->fetchAll();
 
-	    print "<ul>\n";
-	    foreach($result as $row)
-	    {
-	       print "<li class='rel'>";
-	       $data = unserialize($row['data']);
-	       $link = $data['link'];
-	       $title = $data['title'];
-	       $desc = $data['description'];
-	       $date = date($date_format,$data['date']);
-	       print "<p><a href='$link'>$title</a></p>";
-	       print "<span class='date'>$date</span>";
-	       print "</li>\n";
-	    }
-	    print "</ul>";
+	    greader($result, $limit);
 	 }
 	 catch(PDOException $e)
 	 {
@@ -153,28 +118,8 @@ catch(PDOException $e)
 	    $statement_combine->execute();
 	    $result = $statement_combine->fetchAll();
 
-	    print "<ul>\n";
-	    foreach($result as $row)
-	    {
-	       // Add style between share entry and status entry
-	       print "<li class='rel'>";
-	       $data = unserialize($row['data']);
-	       $link = $data['link'];
-	       $title = preg_replace("/^Mark /","",$data['title']);
-	       $desc = $data['description'];
-	       $date = date($date_format,$data['date']);
-	       preg_match("%</span><span>(.*)</span><span>%s", $desc, $comments);
-	       preg_match("%<a href=\"(.*?)\" %s",$desc,$real_link);
-	       if(isset($comments[1]))
-	       		print "<p><a href='".$real_link[1]."'>$title</a> :: <span class='em'>".$comments[1]."</span></p>";
-	       else
-	       		print "<p><a href='$link'>$title</a></p>";
-	       print "<span class='date'>$date</span>";
-	       print "</li>\n";
-	    }
-	    print "</ul>";
+	    facebook($result, $limit);
 	    
-	    print "<div class='more'><a href='ajax.php?i=5&f1=$facebook_share_feed&f2=$facebook_status_feed'>&laquo;more&raquo;</a></div>";
 	 }
 	 catch(PDOException $e)
 	 {
@@ -189,7 +134,7 @@ catch(PDOException $e)
 	    <h4>Twitter</h4>
 	    <p>One hundred forty character thoughts...</p>
 	 </div>
-	 <div class="content">
+	 <div class="content rel">
 	 <?php
 	 try
 	 {
@@ -200,23 +145,7 @@ catch(PDOException $e)
 	    $statement->execute();
 	    $result = $statement->fetchAll();
 
-	    print "<ul>\n";
-	    foreach($result as $row)
-	    {
-	       print "<li class='rel'>";
-	       $data = unserialize($row['data']);
-	       $link = $data['link'];
-	       $title = $data['title'];
-	       $desc = $data['description'];
-	       $title = preg_replace("/griphiam:/","", $title);
-	       $title = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1">$1</a>', $title); // add links to links
-	       $title = preg_replace("/@([\w]*)/", "<a href='http://twitter.com/$1'>@$1</a>", $title); // add links to twitter users
-	       $date = date($date_format,$data['date']);
-	       print "<p><a href='$link'><img src='images/twitter_mini_profile.jpg'/></a> $title</p>";
-	       print "<span class='date'>$date</span>";
-	       print "</li>\n";
-	    }
-	    print "</ul>";
+	 	twitter($result, $limit);   	 
 	 }
 	 catch(PDOException $e)
 	 {
@@ -232,7 +161,7 @@ catch(PDOException $e)
 	    <p>Aspiring amature photographer</p>
 	    <p><a href="http://flickr.com/photos/markphilpot">Flickr Gallery</a></p>
 	 </div>
-	 <div class="content">
+	 <div class="content rel">
 	 <?php
 	 try
 	 {
@@ -243,19 +172,7 @@ catch(PDOException $e)
 	    $statement->execute();
 	    $result = $statement->fetchAll();
 
-	    foreach($result as $row)
-	    {
-	       $data = unserialize($row['data']);
-	       $link = $data['link'];
-	       $thumb = $data['thumbnail'];
-	       $title = $data['title'];
-	       $img = $data['image'];
-	       $img = preg_replace("/_s/","",$thumb);
-	       //print_r($data);
-	       print "<a href='$img' title='$title'>\n";
-	       print "<img src='$thumb' alt='$title' />\n";
-	       print "</a>";
-	    }
+	    flickr($result, $limit);
 	 }
 	 catch(PDOException $e)
 	 {
@@ -271,7 +188,7 @@ catch(PDOException $e)
 	    <p>My uploads and favorites</p>
 	    <p><a href="http://www.youtube.com/user/griphiam">Youtube Profile</a></p>
 	 </div>
-	 <div class="content">
+	 <div class="content rel">
 	 <?php
 	 try
 	 {
@@ -282,17 +199,7 @@ catch(PDOException $e)
 	    $statement->execute();
 	    $result = $statement->fetchAll();
 
-	    foreach($result as $row)
-	    {
-	       $data = unserialize($row['data']);
-	       $link = $data['link'];
-	       $thumb = $data['thumbnail'];
-	       $title = $data['title'];
-	       //print_r($data);
-	       print "<a href='$link' title='$title'>\n";
-	       print "<img src='$thumb' alt='$title' />\n";
-	       print "</a>";
-	    }
+	    youtube($result, $limit);
 	 }
 	 catch(PDOException $e)
 	 {
@@ -307,7 +214,7 @@ catch(PDOException $e)
 	    <h4>Delicious</h4>
 	    <p>My link collection</p>
 	 </div>
-	 <div class="content">
+	 <div class="content rel">
 	 <?php
 	 try
 	 {
@@ -318,18 +225,7 @@ catch(PDOException $e)
 	    $statement->execute();
 	    $result = $statement->fetchAll();
 
-	    print "<ul>";
-	    foreach($result as $row)
-	    {
-	       print "<li>";
-	       $data = unserialize($row['data']);
-	       $link = $data['link'];
-	       $title = $data['title'];
-	       $desc = $data['description'];
-	       print "<p><a href='$link'>$title</a> $desc</p>";
-	       print "</li>";
-	    }
-	    print "</ul>";
+	    delicious($result, $limit);
 	 }
 	 catch(PDOException $e)
 	 {
@@ -344,7 +240,7 @@ catch(PDOException $e)
 	    <h4>Goodreads</h4>
 	    <p>What I've recently read</p>
 	 </div>
-	 <div class="content">
+	 <div class="content rel">
 	 <?php
 	 try
 	 {
@@ -355,18 +251,7 @@ catch(PDOException $e)
 	    $statement->execute();
 	    $result = $statement->fetchAll();
 
-	    foreach($result as $row)
-	    {
-	       $data = unserialize($row['data']);
-	       $link = preg_replace('/\?.*/','',trim($data['link'])); // Remove query paramters from link
-	       $thumb = trim($data['thumbnail']);
-	       $title = trim($data['title']);
-	       $desc = trim($data['description']);
-	       $image = trim($data['image']);
-	       print "<a href='$link' rel='$image' class='preview' title=\"$title\">\n";
-	       print "<img src='$thumb' alt=\"$title\" />\n";
-	       print "</a>";
-	    }
+	    goodreads($result, $limit);
 	 }
 	 catch(PDOException $e)
 	 {
@@ -381,7 +266,7 @@ catch(PDOException $e)
 	    <h4>Development</h4>
 	    <p>Personal development streams from my <a href="http://github.com/griphiam">github</a> repositories</p>
 	 </div>
-	 <div class="content">
+	 <div class="content rel">
 	 <?php
 	 try
 	 {
@@ -392,22 +277,7 @@ catch(PDOException $e)
 	    $statement->execute();
 	    $result = $statement->fetchAll();
 
-	    print "<ul>\n";
-	    foreach($result as $row)
-	    {
-	       print "<li>";
-	       $data = unserialize($row['data']);
-	       $link = $data['link'];
-	       $title = $data['title'];
-	       $desc = $data['description'];
-	       $rep_bak;
-	       preg_match("%github\.com/(.*)/commits.*%",$link,$rep_back);
-	       $rep = isset($data['repository']) ? $data['repository'] : $rep_back[1];
-	       $date = date($date_format,$data['date']);
-	       print "<p>Commited <a href='$link'>$title</a> to <a href='http://github.com/$rep'>$rep</a> [$date]</p>";
-	       print "</li>\n";
-	    }
-	    print "</ul>";
+	    github($result, $limit);
 	 }
 	 catch(PDOException $e)
 	 {
@@ -422,7 +292,7 @@ catch(PDOException $e)
 	    <h4>Image Bookmarking</h4>
 	    <p>Help hone my own photography by studing the works of others via <a href="http://vi.sualize.us/griphiam">vi.sualize.us</a>. In general tagging interesting images around the net.</p>
 	 </div>
-	 <div class="content">
+	 <div class="content rel">
 	 <?php
 	 try
 	 {
@@ -432,6 +302,9 @@ catch(PDOException $e)
 
 	    $statement->execute();
 	    $result = $statement->fetchAll();
+	    
+	    $date;
+	    $first = true;
 
 	    print "<div id='myflow' class='ContentFlow'>";
 	    print "<div class='flow'>\n";
@@ -444,6 +317,13 @@ catch(PDOException $e)
 	       $title = $data['title'];
 	       $img = $data['image'];
 	       $img = preg_replace("/_s/","",$thumb);
+	       
+	       if($first)
+	       {
+	       		$first = false;
+	       		$date = date($date_format,$data['date']);
+	       }
+	       
 	       //print_r($data);
 	       //print "<a href='$img' title='$title'>\n";
 	       print "<div class='item'>";
@@ -457,6 +337,7 @@ catch(PDOException $e)
                 <div class='slider'><div class='position'></div></div>
             </div>
 	    </div>\n";
+	    print "<span class='datebottom'>Last updated: $date</span>";
 	 }
 	 catch(PDOException $e)
 	 {
@@ -489,11 +370,43 @@ catch(PDOException $e)
 
 <script type="text/javascript">
 $(function() {
-	$('#flickr div.content a').lightBox({
-			imageLoading: 'lib/jquery-lightbox-0.5/images/lightbox-ico-loading.gif',
-			imageBtnClose: 'lib/jquery-lightbox-0.5/images/lightbox-btn-close.gif'
-	}); // Select all links in object with gallery ID
+	lightbox();
+	imgPreview();
 });
+
+function lightbox()
+{
+	$('#flickr div.content a').not('div.more a').lightBox({
+		imageLoading: 'lib/jquery-lightbox-0.5/images/lightbox-ico-loading.gif',
+		imageBtnClose: 'lib/jquery-lightbox-0.5/images/lightbox-btn-close.gif'
+	}); // Select all links in object with gallery ID
+}
+
+function imgPreview()
+{
+	$('a.preview').imgPreview({
+	    containerID: 'img-preview',
+	    distanceFromCursor: {top:-200, left:10},
+	    srcAttr: 'rel',
+	    // When container is shown:
+	    onShow: function(link){
+	    	// Animate link:
+	    	$(link).stop().animate({opacity:0.4});
+	    	// Reset image:
+	    	$('img', this).stop().css({opacity:0});
+		},
+		// When image has loaded:
+		onLoad: function(){
+	    	// Animate image
+	    	$(this).animate({opacity:1}, 400);
+		},
+		// When container hides: 
+		onHide: function(link){
+	    	// Animate link:
+	    	$(link).stop().animate({opacity:1});
+		}
+	});
+}
 
 var myNewFlow = new ContentFlow('myflow',{
 	maxItemHeight : 184,
@@ -507,38 +420,15 @@ $(document).ready(function(){
 		var link = $(this);
 		$.get( this.href, function(data) {
 			div.replaceWith(data);
+			// Rebind lightbox
+			lightbox();
+			// Rebind imgPreview
+			imgPreview();
 		});
 		return false;
 	});
 });
 
-</script>
-
-<script type="text/javascript"> 
-(function($){  	    
-	$('a.preview').imgPreview({
-	    containerID: 'img-preview',
-	    distanceFromCursor: {top:-200, left:10},
-	    srcAttr: 'rel',
-	    // When container is shown:
-	    onShow: function(link){
-        	// Animate link:
-        	$(link).stop().animate({opacity:0.4});
-        	// Reset image:
-        	$('img', this).stop().css({opacity:0});
-    	},
-    	// When image has loaded:
-    	onLoad: function(){
-        	// Animate image
-        	$(this).animate({opacity:1}, 400);
-    	},
-    	// When container hides: 
-    	onHide: function(link){
-        	// Animate link:
-        	$(link).stop().animate({opacity:1});
-    	}
-	});
-})(jQuery);
 </script>
 
 </body>

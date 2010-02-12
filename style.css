@@ -101,12 +101,19 @@ body {
 .content {
 	float: left;
 	width: 45em;
-	padding: 2.2em 0 0 0;
+	padding: 2.5em 0 0 0;
 }
 
 .date {
 	position: absolute;
 	top: 0em;
+	right: 0em;
+	font-size: 0.9em;
+}
+
+.datebottom {
+	position: absolute;
+	bottom: 0em;
 	right: 0em;
 	font-size: 0.9em;
 }
@@ -171,7 +178,11 @@ body {
 }
 
 #youtube div.content a {
-	padding-right: 1.35em;
+	padding-right: 1.40em;
+}
+
+#youtube div.more {
+	right: -5.3em;
 }
 
 #delicious li {

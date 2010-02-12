@@ -1,28 +1,21 @@
 <?php
 require_once('include/config.php');
 require_once('include/feeds.php');
+require_once('include/content.php');
 
 $index = $_REQUEST['i'];
 $feed1 = $_REQUEST['f1'];
-$feed2 = $_REQUEST['f2']; // optional
+$feed2 = isset($_REQUEST['f2']) ? $_REQUEST['f2'] : "" ; // optional
 
 try
 {
    $db = new PDO("mysql:host=$host;dbname=$database", $user);
    $statement = $db->prepare($base_sql_range);
    $statement_combine = $db->prepare($base_sql_combine_range);
-}
-catch(PDOException $e)
-{
-   print $e->getMessage();
-   die();
-}
 
-//Facebook
-if($feed1 == $facebook_share_feed || $feed1 == $facebook_status_feed)
-{
-	try
-	 {
+	//Facebook
+	if($feed1 == $facebook_share_feed || $feed1 == $facebook_status_feed)
+	{
 	    $limit = 5;
 	    $start = (int)$index;
 	    $end = $start+$limit;
@@ -34,33 +27,134 @@ if($feed1 == $facebook_share_feed || $feed1 == $facebook_status_feed)
 	    $statement_combine->execute();
 	    $result = $statement_combine->fetchAll();
 
-	    print "<ul>\n";
-	    foreach($result as $row)
-	    {
-	       // Add style between share entry and status entry
-	       print "<li class='rel'>";
-	       $data = unserialize($row['data']);
-	       $link = $data['link'];
-	       $title = preg_replace("/^Mark /","",$data['title']);
-	       $desc = $data['description'];
-	       $date = date($date_format,$data['date']);
-	       preg_match("%</span><span>(.*)</span><span>%s", $desc, $comments);
-	       preg_match("%<a href=\"(.*?)\" %s",$desc,$real_link);
-	       if(isset($comments[1]))
-	       		print "<p><a href='".$real_link[1]."'>$title</a> :: <span class='em'>".$comments[1]."</span></p>";
-	       else
-	       		print "<p><a href='$link'>$title</a></p>";
-	       print "<span class='date'>$date</span>";
-	       print "</li>\n";
-	    }
-	    print "</ul>";
-	    
-	    print "<div class='more'><a href='ajax.php?i=$end&f1=$facebook_share_feed&f2=$facebook_status_feed'>&laquo;more&raquo;</a></div>";
+	    facebook($result, $end);
 	 }
-	 catch(PDOException $e)
+	 else if($feed1 == $twitter_feed)
 	 {
-	    print "<h2>DB Error</h2>";
+	 	$limit = 5;
+	    $start = (int)$index;
+	    $end = $start+$limit;
+	    $statement->bindParam(':feed', $twitter_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit1', $start, PDO::PARAM_INT);
+	    $statement->bindParam(':limit2', $limit, PDO::PARAM_INT);
+	    
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+	    
+	    twitter($result, $end);
+	    
+	 }
+	 else if($feed1 == $greader_feed)
+	 {
+	 	$limit = 5;
+	    $start = (int)$index;
+	    $end = $start+$limit;
+	    $statement->bindParam(':feed', $greader_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit1', $start, PDO::PARAM_INT);
+	    $statement->bindParam(':limit2', $limit, PDO::PARAM_INT);
+	    
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+	    
+	    greader($result, $end);
+	    
+	 }
+	 else if($feed1 == $blog_feed)
+	 {
+	 	$limit = 5;
+	    $start = (int)$index;
+	    $end = $start+$limit;
+	    $statement->bindParam(':feed', $blog_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit1', $start, PDO::PARAM_INT);
+	    $statement->bindParam(':limit2', $limit, PDO::PARAM_INT);
+	    
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+	    
+	    blog($result, $end);
+	    
+	 }
+	 else if($feed1 == $flickr_feed)
+	 {
+	 	$limit = 21;
+	    $start = (int)$index;
+	    $end = $start+$limit;
+	    $statement->bindParam(':feed', $flickr_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit1', $start, PDO::PARAM_INT);
+	    $statement->bindParam(':limit2', $limit, PDO::PARAM_INT);
+	    
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+	    
+	    flickr($result, $end);
+	    
+	 }
+	 else if($feed1 == $youtube_feed)
+	 {
+	 	$limit = 8;
+	    $start = (int)$index;
+	    $end = $start+$limit;
+	    $statement->bindParam(':feed', $youtube_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit1', $start, PDO::PARAM_INT);
+	    $statement->bindParam(':limit2', $limit, PDO::PARAM_INT);
+	    
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+	    
+	    youtube($result, $end);
+	    
+	 }
+	 else if($feed1 == $delicious_feed)
+	 {
+	 	$limit = 5;
+	    $start = (int)$index;
+	    $end = $start+$limit;
+	    $statement->bindParam(':feed', $delicious_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit1', $start, PDO::PARAM_INT);
+	    $statement->bindParam(':limit2', $limit, PDO::PARAM_INT);
+	    
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+	    
+	    delicious($result, $end);
+	    
+	 }
+	 else if($feed1 == $goodreads_feed)
+	 {
+	 	$limit = 20;
+	    $start = (int)$index;
+	    $end = $start+$limit;
+	    $statement->bindParam(':feed', $goodreads_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit1', $start, PDO::PARAM_INT);
+	    $statement->bindParam(':limit2', $limit, PDO::PARAM_INT);
+	    
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+	    
+	    goodreads($result, $end);
+	    
+	 }
+	 else if($feed1 == $github_feed)
+	 {
+	 	$limit = 5;
+	    $start = (int)$index;
+	    $end = $start+$limit;
+	    $statement->bindParam(':feed', $github_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit1', $start, PDO::PARAM_INT);
+	    $statement->bindParam(':limit2', $limit, PDO::PARAM_INT);
+	    
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+	    
+	    github($result, $end);
+	    
 	 }
 }
+catch(PDOException $e)
+{
+   print "<h2>DB Error</h2>";
+}
+
+$db = null;
 
 ?>

@@ -132,7 +132,7 @@ function youtube($result, $end)
     {
        $data = unserialize($row['data']);
        $link = urldecode($data['link']);
-       $thumb = $data['thumbnail'];
+       $thumb = $data['thumbnail'] != '' ? $data['thumbnail'] : 'images/default.jpg';
        $title = $data['title'];
        //print_r($data);
        print "<a href='$link' title='$title'>\n";

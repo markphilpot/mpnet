@@ -3,26 +3,8 @@
 // config.php contains the variables required to connect to the database:
 // $host, $database, $user, $pass
 require_once('include/config.php');
+require_once('include/feeds.php');
 
-$blog_feed = 19;
-$flickr_feed = 12;
-$facebook_share_feed = 6;
-$facebook_status_feed = 18;
-$delicious_feed = 7;
-$twitter_feed = 11;
-$goodreads_feed = 13;
-$github_feed = 16;
-$greader_feed = 5;
-$youtube_feed = 10;
-$visualizeus_feed = 4;
-
-$db;
-$base_sql = "select t1.*, t2.feed, t2.options from wp_lifestream_event as t1 inner join wp_lifestream_feeds as t2 on t1.feed_id = t2.id where t2.id = :feed order by t1.timestamp desc limit :limit";
-$base_sql_combine = "select t1.*, t2.feed, t2.options from wp_lifestream_event as t1 inner join wp_lifestream_feeds as t2 on t1.feed_id = t2.id where t2.id = :feed1 or t2.id = :feed2 order by t1.timestamp desc limit :limit";
-$statement;
-$statment_combine;
-
-$date_format = "n.j.Y";
 
 try
 {
@@ -159,7 +141,7 @@ catch(PDOException $e)
 	    <p>Essential social networking</p>
 	    <p><a href="http://www.facebook.com/mark.philpot">Facebook Profile</a></p>
 	 </div>
-	 <div class="content">
+	 <div class="content rel">
 	 <?php
 	 try
 	 {
@@ -191,6 +173,8 @@ catch(PDOException $e)
 	       print "</li>\n";
 	    }
 	    print "</ul>";
+	    
+	    print "<div class='more'><a href='ajax.php?i=5&f1=$facebook_share_feed&f2=$facebook_status_feed'>&laquo;more&raquo;</a></div>";
 	 }
 	 catch(PDOException $e)
 	 {
@@ -515,6 +499,17 @@ var myNewFlow = new ContentFlow('myflow',{
 	maxItemHeight : 184,
 	startItem : 'first',
 	visibleItems : 3
+});
+
+$(document).ready(function(){
+	$("div.more a").live('click', function(i){
+		var div = $(this).parent();
+		var link = $(this);
+		$.get( this.href, function(data) {
+			div.replaceWith(data);
+		});
+		return false;
+	});
 });
 
 </script>

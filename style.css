@@ -111,6 +111,12 @@ body {
 	font-size: 0.9em;
 }
 
+.more {
+	position: absolute;
+	bottom: 0em;
+	right: -4em;
+}
+
 .rel {
 	position: relative;
 }

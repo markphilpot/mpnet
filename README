@@ -1,1 +1,33 @@
-Website for www.markphilpot.net
+Website Frontend for WP Lifestream Plugin
+
+This code creates a singe page lifestream using the data from the Wordpress Lifestream Plugin (http://www.enthropia.com/labs/wp-lifestream/)
+
+Think of it as a custom front end.
+
+Installation:
+
+1. In the include directory, create a config.php file with the following variables (pointing to your Wordpress database):
+   $host, $database, $user, $pass
+
+2. Customize the feed IDs in feeds.php to the IDs of the appropriate feeds.
+
+Support:
+
+File issues at http://github.com/griphiam/mpnet
+
+License:
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+

@@ -11,7 +11,7 @@ function facebook($result, $end)
        // Add style between share entry and status entry
        print "<li class='rel'>";
        $data = unserialize($row['data']);
-       $link = $data['link'];
+       $link = urldecode($data['link']);
        $title = preg_replace("/^Mark /","",$data['title']);
        $desc = $data['description'];
        $date = date($date_format,$data['date']);

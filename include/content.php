@@ -18,7 +18,7 @@ function facebook($result, $end)
        preg_match("%</span><span>(.*)</span><span>%s", $desc, $comments);
        preg_match("%<a href=\"(.*?)\" %s",$desc,$real_link);
        if(isset($comments[1]))
-       		print "<p><a href='".$real_link[1]."'>$title</a> :: <span class='em'>".$comments[1]."</span></p>";
+       		print "<p><a href='".urldecode($real_link[1])."'>$title</a> :: <span class='em'>".$comments[1]."</span></p>";
        else
        		print "<p><a href='$link'>$title</a></p>";
        print "<span class='date'>$date</span>";

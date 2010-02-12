@@ -131,7 +131,7 @@ function youtube($result, $end)
 	foreach($result as $row)
     {
        $data = unserialize($row['data']);
-       $link = $data['link'];
+       $link = urldecode($data['link']);
        $thumb = $data['thumbnail'];
        $title = $data['title'];
        //print_r($data);

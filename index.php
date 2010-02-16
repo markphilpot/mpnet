@@ -317,7 +317,7 @@ catch(PDOException $e)
 	       $title = $data['title'];
 	       $img = $data['image'];
 	       $img = preg_replace("/_s/","",$thumb);
-	       
+	       $title = preg_replace("/'/","",$title); // Firefox doesn't like ' character
 	       if($first)
 	       {
 	       		$first = false;

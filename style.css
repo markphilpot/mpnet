@@ -141,7 +141,7 @@ body {
 	padding: 0 0 0.7em 0;
 }
 
-#blog li p {
+#blog li p, #blog li h2 {
 	margin-right: 5.0em;
 }
 

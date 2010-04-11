@@ -6,11 +6,19 @@ function facebook($result, $end)
 	global $date_format, $facebook_share_feed, $facebook_status_feed;
 	
 	print "<ul>\n";
+	$last_date;
     foreach($result as $row)
     {
        // Add style between share entry and status entry
-       print "<li class='rel'>";
        $data = unserialize($row['data']);
+       
+       if($data['date'] == $last_date)
+		continue;
+       else
+		$last_date = $data['date'];
+		
+       print "<li class='rel'>";
+       
        $link = urldecode($data['link']);
        $title = preg_replace("/^Mark /","",$data['title']);
        $desc = $data['description'];
@@ -81,7 +89,6 @@ function blog($result, $end)
     $last_title = "";
     foreach($result as $row)
     {
-    	print "<li class='rel'>";
        $data = unserialize($row['data']);
        $title = $data['title'];
        if($title == $last_title)
@@ -91,6 +98,8 @@ function blog($result, $end)
        $desc = $data['description'];
        $link = $data['link'];
        $thumb = $data['thumbnail'];
+       
+       print "<li class='rel'>";
        	if(preg_match('/add-to-any/', $thumb))
        		print "<h2><a href='$link' title='$title'>$title</a></h2>\n";
        	else

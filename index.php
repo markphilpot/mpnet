@@ -270,7 +270,7 @@ catch(PDOException $e)
 	 <?php
 	 try
 	 {
-	    $limit = 5;
+	    $limit = 7;
 	    $statement->bindParam(':feed', $github_feed, PDO::PARAM_INT);
 	    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
 

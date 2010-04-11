@@ -194,22 +194,23 @@ function github($result, $end)
 	global $date_format, $github_feed;
 	
 	print "<ul>\n";
-	$last_title = "";
+	$last_date = "";
     foreach($result as $row)
     {
-       print "<li>";
+       
        $data = unserialize($row['data']);
        $link = $data['link'];
        $title = $data['title'];
-       if($title == $last_title)
+       if($data['date'] == $last_date)
 		continue;
        else
-		$last_title = $title;
+		$last_date = $data['date'];
        $desc = $data['description'];
        $rep_bak;
        preg_match("%github\.com/(.*)/commits.*%",$link,$rep_back);
        $rep = isset($data['repository']) ? $data['repository'] : $rep_back[1];
        $date = date($date_format,$data['date']);
+       print "<li>";
        print "<p>Commited <a href='$link'>$title</a> to <a href='http://github.com/$rep'>$rep</a> [$date]</p>";
        print "</li>\n";
     }

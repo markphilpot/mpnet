@@ -207,6 +207,16 @@ body {
 	vertical-align: middle;
 }
 
+#spinner {
+	background: url('images/spinner.gif');
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 32px;
+	height: 32px;
+	display: none;
+}
+
 /* Image Preview */
 #img-preview {
 z-index: 999;

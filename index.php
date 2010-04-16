@@ -15,7 +15,7 @@ try
 }
 catch(PDOException $e)
 {
-   print $e->getMessage();
+   print "<h3>This is a test of the emergency broadcast system. This is only a test</h3>";
    die();
 }
 
@@ -29,12 +29,17 @@ catch(PDOException $e)
    <script type="text/javascript" src="lib/jquery-1.4.1.min.js"></script>
    <script type="text/javascript" src="lib/jquery-lightbox-0.5/js/jquery.lightbox-0.5.js"></script>
    <script type="text/javascript" src="lib/jquery.preview.js"></script>
+   <script type="text/javascript" src="lib/jquery-autocomplete/jquery.autocomplete.js"></script>
    <script type="text/javascript" src="lib/ContentFlow/contentflow_src.js" load="white"></script>
    <link rel="stylesheet" type="text/css" href="lib/jquery-lightbox-0.5/css/jquery.lightbox-0.5.css" media="screen" />
+   <link rel="stylesheet" type="text/css" href="lib/jquery-autocomplete/jquery.autocomplete.css"/>
+   
    <link rel="alternate" type="application/atom+xml" href="http://www.markphilpot.net/atom"/>
 </head>
 
 <body>
+	
+	<div id="spinner"></div>
 
    <div id="content">
       <div id="header">
@@ -46,6 +51,11 @@ catch(PDOException $e)
 	    <p>This space is my social networking footprint (lifestream).</p>
 	 </div> <!-- end bio -->
       </div> <!-- end header -->
+      
+      <div id="search">
+        <div class="description">&nbsp;</div>
+        <div class="content"><input type="text" id="search_box" size="100"/></div>
+      </div>
 
       <div id="blog">
 	 <div class="description">
@@ -427,6 +437,32 @@ $(document).ready(function(){
 		});
 		return false;
 	});
+
+	// Load search DB
+	$("#spinner").show();
+	$.ajax({
+		  url: "db.php",
+		  cache: false,
+		  success: function(html){
+		    $("#spinner").hide();
+		}
+	});
+
+	$("#search_box").autocomplete("search.php", {
+		minChars: 3,
+		formatItem: function(item) {
+	    	return item[0];
+	    }
+	  }).result(
+			function(event, item) {
+				if(item[1] != undefined) {
+					//alert(item[1]);
+		  			location.href = item[1];
+				}
+	});
+	
+			
+	
 });
 
 </script>

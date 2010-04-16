@@ -217,6 +217,10 @@ body {
 	display: none;
 }
 
+#search div.content {
+	padding-top: 0em;
+}
+
 /* Image Preview */
 #img-preview {
 z-index: 999;

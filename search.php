@@ -22,8 +22,9 @@ try
 	if(preg_match("/^site:([\w]+?) ([\w]+)/", $q, $match))
 	{
 		$m = "%".$match[2]."%";
-		$site_stmt->bindParam(":feed", $match[1], PDO::PARAM_STR, 32);
-		$site_stmt->bindParam(":match", $m, PDO::PARAM_STR, 75);
+		$feed = $match[1];
+		$site_stmt->bindParam(":feed", $feed, PDO::PARAM_STR, 32);
+		$site_stmt->bindParam(":match", $m, PDO::PARAM_STR);
 		$site_stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
 		$site_stmt->execute();
 		
@@ -36,6 +37,15 @@ try
 			$data = unserialize($row['data']);
 			$link = $data['link'];
 			$title = $data['title'];
+			$desc = $data['description'];
+			
+			if($row['feed'] == "facebook")
+			{
+				$link = urldecode($data['link']);
+       			preg_match("%<a href=\"(.*?)\" %s",$desc,$real_link);
+       			if(isset($real_link[1]))
+       				$link = urldecode($real_link[1]);
+			}
 			
 			print $title."|".$link."\n";
 		}
@@ -53,14 +63,14 @@ try
 		
 		foreach($result as $row)
 		{
-			print "site:".$row['feed']."\n";
+			print "site:".$row['feed']." \n";
 		}
 	}
 	elseif(preg_match("/^site:/", $q, $match))
 	{
 		foreach($db->query("select distinct feed from wp_lifestream_feeds") as $row)
 		{
-			print "site:".$row['feed']."\n";
+			print "site:".$row['feed']." \n";
 		}
 	}
 	else
@@ -79,6 +89,15 @@ try
 			$data = unserialize($row['data']);
 			$link = $data['link'];
 			$title = $data['title'];
+			$desc = $data['description'];
+			
+			if($row['feed'] == "facebook")
+			{
+				$link = urldecode($data['link']);
+       			preg_match("%<a href=\"(.*?)\" %s",$desc,$real_link);
+       			if(isset($real_link[1]))
+       				$link = urldecode($real_link[1]);
+			}
 			
 			print $title."|".$link."\n";
 		}

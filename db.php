@@ -2,6 +2,19 @@
 
 require_once('include/config.php');
 
+/*
+--
+-- Table structure for table `wp_lifestream_search`
+--
+
+CREATE TABLE IF NOT EXISTS `wp_lifestream_search` (
+  `id` int(11) NOT NULL,
+  `feed` varchar(32) NOT NULL,
+  `data` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+*/
+
 try
 {
 	$query = "select e.id, e.feed, e.data from wp_lifestream_event e left outer join wp_lifestream_search s on e.id = s.id where s.id is null";
@@ -22,7 +35,7 @@ try
 		
 		$insert_stmt->bindParam(':id', $id, PDO::PARAM_INT);
 		$insert_stmt->bindParam(':feed', $feed, PDO::PARAM_STR, 32);
-	    $insert_stmt->bindParam(':data', $data, PDO::PARAM_STR, 1000);
+	    $insert_stmt->bindParam(':data', $data, PDO::PARAM_STR);
 	    
 	    $insert_stmt->execute();
 	}

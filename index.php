@@ -456,8 +456,9 @@ $(document).ready(function(){
 	  }).result(
 			function(event, item) {
 				if(item[1] != undefined) {
-					alert(item[1]);
+					//alert(item[1]);
 		  			//location.href = item[1];
+		  			window.open(item[1], "_blank");
 				}
 	});
 	

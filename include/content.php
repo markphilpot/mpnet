@@ -6,7 +6,7 @@ function facebook($result, $end)
 	global $date_format, $facebook_share_feed, $facebook_status_feed;
 	
 	print "<ul>\n";
-	$last_date;
+	$last_date = "";
     foreach($result as $row)
     {
        // Add style between share entry and status entry
@@ -97,7 +97,7 @@ function blog($result, $end)
 		$last_title = $title;
        $desc = $data['description'];
        $link = $data['link'];
-       $thumb = $data['thumbnail'];
+       $thumb = isset($data['thumbnail']) ? $data['thumbnail'] : "";
        
        print "<li class='rel'>";
        	if(preg_match('/add-to-any/', $thumb))
@@ -141,7 +141,7 @@ function youtube($result, $end)
     {
        $data = unserialize($row['data']);
        $link = urldecode($data['link']);
-       $thumb = $data['thumbnail'] != '' ? $data['thumbnail'] : 'images/default.jpg';
+       $thumb = isset($data['thumbnail']) ? $data['thumbnail'] : 'images/default.jpg';
        $title = $data['title'];
        //print_r($data);
        print "<a href='$link' title='$title'>\n";

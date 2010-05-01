@@ -206,6 +206,13 @@ function github($result, $end)
        else
 		$last_date = $data['date'];
        $desc = $data['description'];
+       
+       if($title == '')
+       {
+       		preg_match("%<blockquote>(.*)</blockquote>%",$desc,$match);
+       		$title = $match[1];
+       }
+       
        $rep_bak;
        preg_match("%github\.com/(.*)/commits.*%",$link,$rep_back);
        $rep = isset($data['repository']) ? $data['repository'] : $rep_back[1];

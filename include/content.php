@@ -121,11 +121,18 @@ function flickr($result, $end)
     {
        $data = unserialize($row['data']);
        $link = $data['link'];
-       $thumb = $data['thumbnail'];
+       $desc = $data['description'];
+
+       //$thumb = $data['thumbnail']; Thumb isn't included in newer feed entries -- Get it from description
+
+       preg_match("/img src=\"(.+?)\"/", $desc, $thumb);
+
        $title = $data['title'];
        $img = $data['image'];
-       $img = preg_replace("/_s/","",$thumb);
+       $img = preg_replace("/_m/","",$thumb[1]);
+       $thumb = preg_replace("/_m/","_s",$thumb[1]);
        //print_r($data);
+
        print "<a href='$img' title='$title'>\n";
        print "<img src='$thumb' alt='$title' />\n";
        print "</a>";

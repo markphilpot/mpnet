@@ -149,6 +149,21 @@ try
 	    github($result, $end);
 	    
 	 }
+	 else if($feed1 == $steam_feed)
+	 {
+	 	$limit = 5;
+	    $start = (int)$index;
+	    $end = $start+$limit;
+	    $statement->bindParam(':feed', $steam_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit1', $start, PDO::PARAM_INT);
+	    $statement->bindParam(':limit2', $limit, PDO::PARAM_INT);
+	    
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+	    
+	    steam($result, $end);
+	    
+	 }
 }
 catch(PDOException $e)
 {

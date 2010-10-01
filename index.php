@@ -296,6 +296,32 @@ catch(PDOException $e)
 	 ?>
 	 </div>
       </div> <!-- end github -->
+
+    <div id="steam">
+        <div class="description">
+            <h4>Gaming</h4>
+            <p>Letting the steam out...</p>
+        </div>
+        <div class="content rel">
+        <?php
+        try
+        {
+            $limit = 5;
+            $statement->bindParam(':feed', $steam_feed, PDO::PARAM_INT);
+            $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+
+            $statement->execute();
+            $result = $statement->fetchAll();
+
+            steam($result, $limit);
+        }
+     catch(PDOException $e)
+     {
+        print "<h2>DB Error</h2>";
+     }
+        ?>
+        </div>
+    </div> <!-- end steam -->
       
       <div id="visualizeus">
 	 <div class="description">

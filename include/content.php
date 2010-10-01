@@ -60,6 +60,32 @@ function twitter($result, $end)
     print "<div class='more'><a href='ajax.php?i=$end&f1=$twitter_feed'>&laquo;more&raquo;</a></div>";
 }
 
+function steam($result, $end)
+{
+	global $date_format, $steam_feed;
+
+    print "<ul>\n";
+
+    foreach($result as $row)
+    {
+        print "<li class='rel'>";
+        $data = unserialize($row['data']);
+        $link = $data['link'];
+        preg_match("/(.*)—(.*)/u", $data['title'], $match);
+        $game = $match[1];
+        $achievement = $match[2]; 
+        $desc = $data['description'];
+        $img = $data['thumbnail'];
+
+        print "<a href='$link'><img src='$img'/></a><span class='title'>$game</span><br/><span class='achievement'>$achievement</span> :: $desc</p>\n";
+
+        print "</li>\n";
+    }
+
+    print "</ul>";
+    print "<div class='more'><a href='ajax.php?i=$end&f1=$steam_feed'>&laquo;more&raquo;</a></div>";
+}
+
 function greader($result, $end)
 {
 	global $date_format, $greader_feed;

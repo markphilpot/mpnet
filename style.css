@@ -178,7 +178,7 @@ body {
 }
 
 #youtube div.content a {
-	padding-right: 1.39em;
+	padding-right: 1.37em;
 }
 
 #youtube div.more {
@@ -191,6 +191,41 @@ body {
 
 #github li {
 	padding: 0 0 0.2em 0;
+}
+
+#steam img {
+    float: left;
+    margin-top: 0em;
+    margin-right: 1em;
+}
+
+#steam li {
+    height: 64px;
+    border-width: 1px;
+    border-color: #000;
+    border-style: solid;
+    margin-bottom: 0.25em;
+    background: -webkit-gradient(
+        linear,
+        left bottom,
+        right bottom,
+        color-stop(0, rgb(204,204,204)),
+        color-stop(1, rgb(255,255,255))
+    );
+    background: -moz-linear-gradient(
+        left center,
+        rgb(204,204,204) 0%,
+        rgb(255,255,255) 100%
+    );
+}
+
+#steam .title {
+    font-size: 2em;
+}
+
+#steam .achievement {
+    font-weight: bold;
+    font-size: 1.25em;
 }
 
 #copyright {

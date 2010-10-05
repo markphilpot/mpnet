@@ -81,7 +81,10 @@
 	*/ 
 	public function genarateFeed()
 	{
-		header("Content-type: text/xml");
+        if($this->version == ATOM)
+            header("Content-Type: application/atom+xml");
+        else
+            header("Content-Type: text/xml");
 		
 		$this->printHead();
 		$this->printChannels();

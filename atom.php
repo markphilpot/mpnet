@@ -8,7 +8,7 @@ ini_set('display_errors', '0');
 $Feed = new FeedWriter(ATOM);
 
 $Feed->setTitle("Mark Philpot's Lifestream");
-$Feed->setLink('http://www.markphilpot.net/rss2/channel/about');
+$Feed->setLink('http://www.markphilpot.net/atom');
 
 $Feed->setChannelElement('updated', date(DATE_ATOM , time()));
 $Feed->setChannelElement('author', array('name'=>'Mark Philpot'));
@@ -31,7 +31,7 @@ try
 		
 		$item->setTitle(trim($data['title']));
 		
-		if($row['feed'] == "goodreads")
+		if($row['feed'] == "goodreads" || $row['feed'] == "facebook")
 		{
 			$link = trim($data['link']);
 			$link = preg_replace('/\?.*/','',$link); // remove query parameters from url

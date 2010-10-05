@@ -134,6 +134,21 @@ try
 	    goodreads($result, $end);
 	    
 	 }
+	 else if($feed1 == $netflix_feed)
+	 {
+	 	$limit = 20;
+	    $start = (int)$index;
+	    $end = $start+$limit;
+	    $statement->bindParam(':feed', $netflix_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit1', $start, PDO::PARAM_INT);
+	    $statement->bindParam(':limit2', $limit, PDO::PARAM_INT);
+	    
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+	    
+	    netflix($result, $end);
+	    
+	 }
 	 else if($feed1 == $github_feed)
 	 {
 	 	$limit = 5;

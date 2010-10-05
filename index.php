@@ -271,6 +271,32 @@ catch(PDOException $e)
 	 </div>
       </div> <!-- end goodreads -->
       
+    <div id="netflix">
+	 <div class="description">
+	    <h4>Movies</h4>
+	    <p>What's current going through my queue...</p>
+	 </div>
+	 <div class="content rel">
+	 <?php
+	 try
+	 {
+	    $limit = 30; // large enough to have 16 entries
+	    $statement->bindParam(':feed', $netflix_feed, PDO::PARAM_INT);
+	    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+
+	    netflix($result, $limit);
+	 }
+	 catch(PDOException $e)
+	 {
+	    print "<h2>DB Error</h2>";
+	 }
+	 ?>
+	 </div>
+      </div> <!-- end netflix -->
+      
       <div id="github">
 	 <div class="description">
 	    <h4>Development</h4>

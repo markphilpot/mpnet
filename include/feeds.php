@@ -11,6 +11,7 @@ $greader_feed = 5;
 $youtube_feed = 10;
 $visualizeus_feed = 4;
 $steam_feed = 21;
+$netflix_feed = 20;
 
 $db;
 $base_sql = "select t1.*, t2.feed, t2.options from wp_lifestream_event as t1 inner join wp_lifestream_feeds as t2 on t1.feed_id = t2.id where t2.id = :feed order by t1.timestamp desc limit :limit";

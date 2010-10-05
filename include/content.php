@@ -222,6 +222,47 @@ function goodreads($result, $end)
     print "<div class='more'><a href='ajax.php?i=$end&f1=$goodreads_feed'>&laquo;more&raquo;</a></div>";
 }
 
+function netflix($result, $end)
+{
+	global $netflix_feed;
+
+    $last_img = array();    
+    $count = 0;
+    $remainder = 0;
+    foreach($result as $row)
+    {
+        if($count == 16)
+        {
+            $remainder++;
+            continue;
+        }
+        else
+        {
+            $count++;
+        }
+        
+       $data = unserialize($row['data']);
+       $link = $data['link'];
+
+       preg_match("%.*<img src=\"(http.+?)\".*%s", $data['description'], $match);
+       $img = $match[1];
+
+       if(array_key_exists($img,$last_img))
+       {
+           $count--;
+           continue;
+       }
+       $last_img[$img] = true;
+
+       $title = trim($data['title']);
+       print "<a href='$link' >\n";
+       print "<img src='$img' alt=\"$title\" />\n";
+       print "</a>";
+    }
+    $end = $end - $remainder;
+    print "<div class='more'><a href='ajax.php?i=$end&f1=$netflix_feed'>&laquo;more&raquo;</a></div>";
+}
+
 function github($result, $end)
 {
 	global $date_format, $github_feed;

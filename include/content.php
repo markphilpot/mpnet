@@ -247,7 +247,7 @@ function netflix($result, $end)
        preg_match("%.*<img src=\"(http.+?)\".*%s", $data['description'], $match);
        $img = $match[1];
 
-       if(array_key_exists($img,$last_img))
+       if(array_key_exists($img,$last_img) || $img == "")
        {
            $count--;
            continue;

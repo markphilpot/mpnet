@@ -61,7 +61,7 @@ catch(PDOException $e)
 	 <div class="description">
 	    <h4>Blog Posts</h4>
 	    <p>Occasionally I need to write something longer than 140 characters, post a picture or comment on a video.</p>
-	    <p><a href="http://blog.mcstudios.net">turn on | tune in | strung out</a></p>
+	    <p><a href="http://www.totiso.com">turn on | tune in | strung out</a></p>
 	 </div>
 	 <div class="content rel">
 	 <?php
@@ -323,13 +323,14 @@ catch(PDOException $e)
 	 </div>
       </div> <!-- end github -->
 
+<!-- steam doesn't really work
     <div id="steam">
         <div class="description">
             <h4>Gaming</h4>
             <p>Letting the steam out...</p>
         </div>
         <div class="content rel">
-        <?php
+        <?php /*
         try
         {
             $limit = 5;
@@ -344,10 +345,10 @@ catch(PDOException $e)
      catch(PDOException $e)
      {
         print "<h2>DB Error</h2>";
-     }
+     } */
         ?>
         </div>
-    </div> <!-- end steam -->
+    </div> end steam -->
       
       <div id="visualizeus">
 	 <div class="description">
